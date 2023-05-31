@@ -1,4 +1,4 @@
-from _constants import DANGER, EXIT_CODES, QUIT_ACTION_STR
+from _constants import DANGER, EXIT_CODES, RESET, QUIT_ACTION_STR
 from _functions import create_action_string, log_and_exit, run_py
 from subprocess import run
 from sys import argv
@@ -12,7 +12,7 @@ DECODE_FLAGS = ['--decode', '-d']
 
 def ask_method(inp):
     action_str = create_action_string('enc', 'dec', QUIT_ACTION_STR)
-    resp = input(f'Do you want to encode or decode your input "{inp}"? {action_str} ').lower()
+    resp = input(f'> Do you want to encode or decode your input "{inp}"? {action_str} ').lower()
 
     if resp in EXIT_CODES:
         log_and_exit(__file__)
@@ -22,11 +22,13 @@ def ask_method(inp):
     elif resp in DECODE_SUBS:
         run(['python', 'base64_decode.py', inp])
     else:
-        print(f'{DANGER}Unknown base64 method "{inp}"')
+        print(f'{DANGER}Unknown base64 method "{inp}"{RESET}')
 
 
 # TODO Command help
-# TODO Pass invalid input along
+# TODO Bard recommends using argparse to simplify the method specification
+# TODO Comments throughout, especially _constants & _functions
+# TODO Gracefully exit KeyboardInterrupt
 
 should_encode = False
 should_decode = False
@@ -38,22 +40,26 @@ if len(argv) > 1:
 
 terminate = False
 
-while not terminate:
-    prompt = f'[Base64CLI] Do you need to encode or decode for base64? {create_action_string("enc", "dec")} '
-    input_method = input(prompt)
-    input_compare = input_method.lower()
-    # Preserve the capital letters of the user input
+try:
+    while not terminate:
+        prompt = f'[Base64CLI] Do you need to encode or decode for base64? {create_action_string("enc", "dec")} '
+        input_method = input(prompt)
+        input_compare = input_method.lower()
+        # Preserve the capital letters of the user input
 
-    if input_compare in EXIT_CODES:
-        terminate = True
-        continue
+        if input_compare in EXIT_CODES:
+            terminate = True
+            continue
 
-    if should_encode or input_compare in ENCODE_SUBS:
-        run_py('base64_encode.py')
-        terminate = True
-    elif should_decode or input_compare in DECODE_SUBS:
-        run_py('base64_decode.py')
-        terminate = True
-    else:
-        # Try to salvage their input by asking them which method they would like to input their string to
-        ask_method(input_method)
+        if should_encode or input_compare in ENCODE_SUBS:
+            run_py('base64_encode.py')
+            terminate = True
+        elif should_decode or input_compare in DECODE_SUBS:
+            run_py('base64_decode.py')
+            terminate = True
+        else:
+            # Try to salvage their input by asking them which method they would like to input their string to
+            ask_method(input_method)
+except KeyboardInterrupt:
+    print()
+    log_and_exit(__file__)

@@ -1,4 +1,4 @@
-from _constants import ACTION, DANGER, RESET
+from _constants import ACTION, ADVISE, DANGER, RESET, WARNING
 from os import path
 from subprocess import run
 
@@ -32,14 +32,27 @@ def sanitize_output(output):
     return display, copyable
 
 
-def log_and_exit(filename):
-    print(f'{DANGER}Exiting {path.basename(filename)}{RESET}')
-    exit(0)
+# TODO Use this
+def equals_any(compare, *to):
+    for t in to:
+        if str(compare).lower() == t: return True
+    return False
+
+
+def log_and_exit(filename, exitcode=0, thankful=True):
+    exit_msg = f'{ADVISE}Exiting {WARNING}{path.basename(filename)}{RESET}{ADVISE}...'
+    if thankful:
+        exit_msg += f" Thank you for using Base64CLI :){RESET}"
+    else:
+        exit_msg += f"{RESET}"
+    print(exit_msg)
+    exit(exitcode)
 
 
 def return_to_main():
     print('')
     run_py('main.py')
+    exit()
 
 
 def run_py(pyfile):
