@@ -1,7 +1,7 @@
-import binascii
+from binascii import Error
 from colorama import Fore, Style
-import pybase64
-import pyperclip
+from pybase64 import b64decode
+from pyperclip import copy
 import sys
 
 EXIT_CODES = ['q', 'quit', 'exit', 'end']
@@ -16,7 +16,7 @@ decoded = str()
 terminate = False
 
 
-def display_and_copy(output, copy=True):
+def display_and_copy(output, should_copy=True):
     display = output
 
     if output.__contains__("https://") or output.__contains__("http://"):
@@ -25,12 +25,12 @@ def display_and_copy(output, copy=True):
     if "\n" in output:
         output = output.replace('\n\n', '\n')
         display = f'\n{output}{RESET}\n'
-        copy = False
+        should_copy = False
 
     print(f'{SUCCESS}Decoded hash: {RESET}{Fore.BLUE}{display}')
 
-    if copy:
-        pyperclip.copy(output)
+    if should_copy:
+        copy(output)
         print(f'{ACTION}Copied to system clipboard{RESET}')
 
 
@@ -53,7 +53,7 @@ while not terminate:
         break
 
     try:
-        decoded = pybase64.b64decode(b64, validate=True)
+        decoded = b64decode(b64, validate=True)
         # Returns bytes, needs to be decoded when displayed
         display_and_copy(decoded.decode('utf-8').strip())
 
@@ -64,7 +64,7 @@ while not terminate:
 
         terminate = True
         # User has inputted all hashes they wished to decode for the session
-    except binascii.Error:
+    except Error:
         if len(b64) > 64:
             b64 = f'{b64[:64]}...'
             # Truncate length of invalid base64 hash for clean console
