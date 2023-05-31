@@ -2,7 +2,7 @@ from binascii import Error
 from colorama import Fore, Style
 from pybase64 import b64decode
 from pyperclip import copy
-import sys
+from sys import argv
 
 EXIT_CODES = ['q', 'quit', 'exit', 'end']
 ACTION = Fore.CYAN
@@ -39,8 +39,8 @@ def log_and_exit():
     exit(0)
 
 
-if len(sys.argv) > 1:
-    b64 = sys.argv[1]
+if len(argv) > 1:
+    b64 = argv[1]
 
 while not terminate:
     if b64 == '':
