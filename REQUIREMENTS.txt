@@ -1,3 +1,4 @@
 colorama
 pybase64
 pyperclip
+python-dotenv

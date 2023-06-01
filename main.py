@@ -1,5 +1,5 @@
-from _constants import DANGER, EXIT_CODES, RESET, QUIT_ACTION_STR
-from _functions import create_action_string, log_and_exit, run_py
+from _constants import DANGER, CODES_EXIT, RESET, QUIT_ACTION_STR
+from _functions import create_action_string, get_python_cmd, log_and_exit, run_py
 from subprocess import run
 from sys import argv
 
@@ -14,13 +14,13 @@ def ask_method(inp):
     action_str = create_action_string('enc', 'dec', QUIT_ACTION_STR)
     resp = input(f'> Do you want to encode or decode your input "{inp}"? {action_str} ').lower()
 
-    if resp in EXIT_CODES:
+    if resp in CODES_EXIT:
         log_and_exit(__file__)
 
     if resp in ENCODE_SUBS:
-        run(['python', 'base64_encode.py', inp])
+        run([get_python_cmd(), 'base64_encode.py', inp])
     elif resp in DECODE_SUBS:
-        run(['python', 'base64_decode.py', inp])
+        run([get_python_cmd(), 'base64_decode.py', inp])
     else:
         print(f'{DANGER}Unknown base64 method "{inp}"{RESET}')
 
@@ -45,7 +45,7 @@ try:
         input_compare = input_method.lower()
         # Preserve the capital letters of the user input
 
-        if input_compare in EXIT_CODES:
+        if input_compare in CODES_EXIT:
             terminate = True
             log_and_exit(__file__)
             continue

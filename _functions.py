@@ -1,9 +1,12 @@
 from re import Pattern
 
 from _constants import ACTION, LINK, RESET, WARNING
-from os import path
+from dotenv import load_dotenv
+from os import path, getenv
 import re
 from subprocess import run
+
+load_dotenv()
 
 
 def create_action_string(*actions, last_use_or=True):
@@ -40,6 +43,10 @@ def equals_any(compare, *to):
     for t in to:
         if str(compare).lower() == t: return True
     return False
+
+
+def get_python_cmd():
+    return getenv('PYTHON_CMD', 'python')
 
 
 def log_and_exit(filename, exitcode=0, thankful=True):
@@ -85,4 +92,4 @@ def return_to_main():
 def run_py(pyfile):
     if not pyfile.endswith('.py'):
         pyfile += '.py'
-    run(['python', pyfile])
+    run([getenv('PYTHON_CMD', 'python'), pyfile])

@@ -15,5 +15,6 @@ The following packages are required and can be installed via the pip command bel
 * [pybase64](https://pypi.org/project/pybase64/)
 * [pyperclip](https://pypi.org/project/pyperclip/)
 * [virtualenv](https://pypi.org/project/virtualenv/)
+* [python-dotenv](https://pypi.org/project/python-dotenv/)
 
 `pip install -r REQUIREMENTS.txt`

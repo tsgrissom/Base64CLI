@@ -2,11 +2,11 @@ from colorama import Fore, Style
 
 ACTION = Fore.CYAN
 ADVISE = Fore.LIGHTRED_EX
+CODES_EXIT = ['q', '']
+CODES_RETURN = ['return', 'back', 'menu', 'main']
 DANGER = Fore.RED
-EXIT_CODES = ['q', 'quit', 'exit', 'end']
 LINK = Fore.BLUE
 RESET = Style.RESET_ALL
-RETURN_CODES = ['return', 'back', 'menu', 'main']
 SUCCESS = Fore.GREEN
 QUIT_ACTION_STR = f'{ADVISE}Q{RESET} to quit'
 WARNING = Fore.LIGHTYELLOW_EX

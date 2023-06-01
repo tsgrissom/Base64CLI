@@ -1,4 +1,4 @@
-from _constants import ACTION, DANGER, EXIT_CODES, SUCCESS, RESET, RETURN_CODES, QUIT_ACTION_STR
+from _constants import ACTION, DANGER, CODES_EXIT, SUCCESS, RESET, CODES_RETURN, QUIT_ACTION_STR
 from _functions import create_action_string, log_and_exit, match_and_get_urls, match_and_replace_urls, return_to_main, sanitize_output
 from binascii import Error
 from colorama import Fore
@@ -41,7 +41,7 @@ try:
         else:
             print(f'Decoding hash "{b64}" supplied as command-line argument')
 
-        if b64.lower() in EXIT_CODES:
+        if b64.lower() in CODES_EXIT:
             log_and_exit(__file__)
             break
 
@@ -62,7 +62,7 @@ try:
             action_str = create_action_string('y', 'n', 'return', QUIT_ACTION_STR)
             another = input(f'> Do you have another hash to decode? {action_str} ').lower()
 
-            if another in RETURN_CODES:
+            if another in CODES_RETURN:
                 return_to_main()
                 break
             elif another == 'y' or another == 'yes':

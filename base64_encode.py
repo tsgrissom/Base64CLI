@@ -1,4 +1,4 @@
-from _constants import ACTION, DANGER, EXIT_CODES, RESET, RETURN_CODES, SUCCESS, QUIT_ACTION_STR
+from _constants import ACTION, DANGER, CODES_EXIT, RESET, CODES_RETURN, SUCCESS, QUIT_ACTION_STR
 from _functions import log_and_exit, return_to_main, sanitize_output, create_action_string
 from binascii import Error
 from pybase64 import b64encode_as_string
@@ -32,7 +32,7 @@ try:
         else:
             print(f'Encoding input "{unencoded}" supplied as command-line argument')
 
-        if unencoded.lower() in EXIT_CODES:
+        if unencoded.lower() in CODES_EXIT:
             log_and_exit(__file__)
             break
 
@@ -52,7 +52,7 @@ try:
             action_string = create_action_string('y', 'n', 'return', QUIT_ACTION_STR)
             another = input(f'> Do you have another string to encode? {action_string} ').lower()
 
-            if another in RETURN_CODES:
+            if another in CODES_RETURN:
                 return_to_main()
                 break
             elif another == 'y' or another == 'yes':
