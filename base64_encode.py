@@ -1,5 +1,5 @@
 from _constants import *
-from _functions import log_and_exit, return_to_main, sanitize_output, create_action_string
+from _functions import create_action_string, log_and_exit, on_keyboard_interrupt, return_to_main, sanitize_output
 from binascii import Error
 from pybase64 import b64encode_as_string
 from pyperclip import copy
@@ -8,6 +8,13 @@ from time import sleep
 
 
 def display_and_copy(inp, out, nocopy=False):
+    """
+    Provides the user-facing results of running the encoding command.
+    :param inp: The string input by the user.
+    :param out: The output to be transformed after any per-process modifications preceding this method.
+    :param nocopy: Whether a copyable output should be copied to system clipboard.
+    :return: None. Method is print-only because it is for this file's scope.
+    """
     sanitized = sanitize_output(out)
     out = sanitized[0]
     copyable = sanitized[1]
@@ -26,6 +33,7 @@ terminate = False
 if len(argv) > 1:
     unencoded = argv[1]
 
+# Handles graceful exit from Ctrl+C
 try:
     while not terminate:
         if unencoded == '':
@@ -40,6 +48,7 @@ try:
         try:
             no_copy = False
 
+            # Simple command arg parsing without needing argparse
             if unencoded.endswith(' --nocopy' or unencoded.endswith(' -nc')):
                 no_copy = True
                 unencoded = unencoded.removesuffix(' --nocopy')
@@ -47,8 +56,6 @@ try:
 
             string_as_bytes = bytes(unencoded, 'utf-8')
             encoded = b64encode_as_string(string_as_bytes)
-
-            sleep(0.75)
 
             display_and_copy(unencoded, encoded, no_copy)
 
@@ -72,4 +79,4 @@ try:
             print(f'{DANGER}Failed to encode hash "{unencoded}" with UTF-8!{RESET}')
             unencoded = str()
 except KeyboardInterrupt:
-    log_and_exit(__file__)
+    on_keyboard_interrupt(__file__)

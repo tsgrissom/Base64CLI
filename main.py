@@ -1,5 +1,5 @@
 from _constants import DANGER, CODES_EXIT, RESET, QUIT_ACTION_STR
-from _functions import create_action_string, get_python_cmd, log_and_exit, run_py
+from _functions import create_action_string, get_python_cmd, log_and_exit, on_keyboard_interrupt, run_py
 from subprocess import run
 from sys import argv
 
@@ -60,5 +60,4 @@ try:
             # Try to salvage their input by asking them which method they would like to input their string to
             ask_method(input_method)
 except KeyboardInterrupt:
-    print()
-    log_and_exit(__file__)
+    on_keyboard_interrupt(__file__)

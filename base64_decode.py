@@ -1,5 +1,5 @@
-from _constants import ACTION, DANGER, CODES_EXIT, SUCCESS, RESET, CODES_RETURN, QUIT_ACTION_STR
-from _functions import create_action_string, dprint, is_debugging, log_and_exit, match_and_get_urls, match_and_replace_urls, return_to_main, sanitize_output
+from _constants import *
+from _functions import create_action_string, dprint, is_debugging, log_and_exit, match_and_get_urls, match_and_replace_urls, on_keyboard_interrupt, return_to_main, sanitize_output
 from binascii import Error
 from colorama import Fore
 from pybase64 import b64decode
@@ -16,6 +16,7 @@ def display_and_copy(output, nocopy):
         if matches is not None:
             dprint(f'URLs discovered in decoded hash: {matches}')
 
+    # Colors URLs discovered by regex to blue
     display = match_and_replace_urls(display)
 
     # sanitize_output() returns two values
@@ -39,6 +40,7 @@ terminate = False
 if len(argv) > 1:
     b64 = argv[1]
 
+# For graceful exit on KeyboardInterrupt
 try:
     while not terminate:
         if b64 == '':
@@ -88,4 +90,4 @@ try:
             print(f'{DANGER}Failed to decode hash "{b64}" with UTF-8!{RESET}')
             b64 = str()
 except KeyboardInterrupt:
-    log_and_exit(__file__)
+    on_keyboard_interrupt(__file__)

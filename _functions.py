@@ -73,7 +73,7 @@ def equals_any(compare, *to, ignore_case=True):
 
 
 def is_debugging():
-    return bool(str.lower(getenv("DEBUG", "False")))
+    return bool(str.lower(getenv('DEBUG', 'False')))
 
 
 def is_valid_url(url):
@@ -88,7 +88,7 @@ def get_python_cmd():
 def log_and_exit(filename, exitcode=0, thankful=True):
     exit_msg = f'[Base64CLI] Exiting {WARNING}{path.basename(filename)}{RESET}...'
     if thankful:
-        exit_msg += f" Thank you for using Base64CLI \u263A"
+        exit_msg += f' Thank you for using Base64CLI \u263A'
     print(exit_msg)
     exit(exitcode)
 
@@ -119,6 +119,19 @@ def match_and_replace_urls(string):
             string = string.replace(match.group(), f'{LINK}{domain}{RESET}')
 
     return string
+
+
+def on_keyboard_interrupt(filename):
+    """
+    Handles the graceful exiting on KeyboardInterrupt.
+    :param filename: Usually __file__ passed from the scope this is called in.
+    """
+    print()
+    if is_debugging():
+        debug_str = f'{WARNING}KeyboardInterrupt detected! ' \
+                    f'Users can gracefully exit the program by entering "Q" on input.{RESET}'
+        dprint(debug_str)
+    log_and_exit(filename)
 
 
 def return_to_main():
