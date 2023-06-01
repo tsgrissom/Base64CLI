@@ -1,5 +1,5 @@
 from _constants import ACTION, DANGER, CODES_EXIT, SUCCESS, RESET, CODES_RETURN, QUIT_ACTION_STR
-from _functions import create_action_string, log_and_exit, match_and_get_urls, match_and_replace_urls, return_to_main, sanitize_output
+from _functions import create_action_string, dprint, is_debugging, log_and_exit, match_and_get_urls, match_and_replace_urls, return_to_main, sanitize_output
 from binascii import Error
 from colorama import Fore
 from pybase64 import b64decode
@@ -7,15 +7,20 @@ from pyperclip import copy
 from sys import argv
 
 
+# Decoded contents might contain links, if they do they should be colored blue
 def display_and_copy(output, nocopy):
     display = output
 
-    # Decoded contents might contain links, if they do they should be colored blue
-    # TODO Replace with regex find and replace
-    # TODO Change style of output
-    urls = match_and_get_urls(display)
+    if is_debugging():
+        matches = match_and_get_urls(display)
+        if matches is not None:
+            dprint(f'URLs discovered in decoded hash: {matches}')
+
     display = match_and_replace_urls(display)
 
+    # sanitize_output() returns two values
+    # 1. The sanitized string
+    # 2. Whether said string is copyable (does it contain linebreaks?)
     sanitized = sanitize_output(display)
     display = sanitized[0]
     should_copy = sanitized[1]
@@ -49,6 +54,7 @@ try:
             no_copy = False
 
             if b64.endswith(' --nocopy' or b64.endswith(' -nc')):
+
                 no_copy = True
                 b64 = b64.removesuffix(' --nocopy')
                 b64 = b64.removesuffix(' -nc')

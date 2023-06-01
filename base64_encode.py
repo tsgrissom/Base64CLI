@@ -1,9 +1,10 @@
-from _constants import ACTION, DANGER, CODES_EXIT, RESET, CODES_RETURN, SUCCESS, QUIT_ACTION_STR
+from _constants import *
 from _functions import log_and_exit, return_to_main, sanitize_output, create_action_string
 from binascii import Error
 from pybase64 import b64encode_as_string
 from pyperclip import copy
 from sys import argv
+from time import sleep
 
 
 def display_and_copy(inp, out, nocopy=False):
@@ -11,12 +12,12 @@ def display_and_copy(inp, out, nocopy=False):
     out = sanitized[0]
     copyable = sanitized[1]
 
-    print(f'{ACTION} \u2022 Your input: {RESET}"{inp}"')
-    print(f'{SUCCESS} \u2937 Encoded: {RESET}{out}')
+    print(f'{RESET} \u2022 {WARNING}Your input: {RESET}"{inp}"')
+    print(f'{RESET} \u2937 {SUCCESS}Encoded: {RESET}{out}')
 
     if copyable and not nocopy:
         copy(out)
-        print(f'{ACTION}Copied encoded string to system clipboard{RESET}')
+        print(f'{RESET} \u2937 {WARNING}Copied encoded string to system clipboard{RESET}')
 
 
 unencoded = str()
@@ -46,6 +47,8 @@ try:
 
             string_as_bytes = bytes(unencoded, 'utf-8')
             encoded = b64encode_as_string(string_as_bytes)
+
+            sleep(0.75)
 
             display_and_copy(unencoded, encoded, no_copy)
 

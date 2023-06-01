@@ -1,9 +1,8 @@
-from re import Pattern
-
 from _constants import ACTION, LINK, RESET, WARNING
 from dotenv import load_dotenv
 from os import path, getenv
 import re
+from re import Pattern
 from subprocess import run
 
 load_dotenv()
@@ -28,6 +27,7 @@ def create_action_string(*actions, last_use_or=True):
     return str_builder
 
 
+# TODO Reconsider how this is set up
 def sanitize_output(output):
     copyable = True
     display = output
@@ -38,11 +38,47 @@ def sanitize_output(output):
     return display, copyable
 
 
+def dprint(string):
+    if is_debugging():
+        print(f'[Debug] {string}')
+
+
 # TODO Use this
-def equals_any(compare, *to):
+def equals_any(compare, *to, ignore_case=True):
+    """
+    Returns True if the `compare` value is equal to any of the `to` values, False otherwise.
+    :param compare: The value to compare.
+    :param to: A list of values to compare against.
+    :param ignore_case: Whether to ignore case when comparing values.
+    :return: Whether `compare` equals any of the `to` values, False otherwise.
+    """
+    if not isinstance(compare, str):
+        raise TypeError('compare must be a string.')
+    if not isinstance(ignore_case, bool):
+        raise TypeError('ignore_case must be a boolean value.')
+
+    if len(to) == 0:
+        if len(compare) == 0:
+            return True
+        else:
+            return False
+
     for t in to:
-        if str(compare).lower() == t: return True
+        if ignore_case:
+            compare = str(compare).lower()
+            t = t.lower()
+        if compare == t:
+            return True
     return False
+
+
+def is_debugging():
+    return bool(str.lower(getenv("DEBUG", "False")))
+
+
+def is_valid_url(url):
+    pattern = compile_url_regex_pattern()
+    return pattern.match(url) is not None
 
 
 def get_python_cmd():
@@ -68,7 +104,9 @@ def match_and_get_urls(string):
     for match in compile_url_regex_pattern().findall(string):
         urls.append(match)
 
-    print(urls)
+    if len(urls) == 0:
+        return None
+
     return urls
 
 
