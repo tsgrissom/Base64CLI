@@ -1,5 +1,8 @@
-from _constants import ACTION, ADVISE, DANGER, RESET, WARNING
+from re import Pattern
+
+from _constants import ACTION, LINK, RESET, WARNING
 from os import path
+import re
 from subprocess import run
 
 
@@ -40,13 +43,37 @@ def equals_any(compare, *to):
 
 
 def log_and_exit(filename, exitcode=0, thankful=True):
-    exit_msg = f'  Exiting {WARNING}{path.basename(filename)}{RESET}...'
+    exit_msg = f'[Base64CLI] Exiting {WARNING}{path.basename(filename)}{RESET}...'
     if thankful:
-        exit_msg += f" Thank you for using Base64CLI :){RESET}"
-    else:
-        exit_msg += f"{RESET}"
+        exit_msg += f" Thank you for using Base64CLI \u263A"
     print(exit_msg)
     exit(exitcode)
+
+
+# noinspection RegExpUnnecessaryNonCapturingGroup
+def compile_url_regex_pattern() -> Pattern:
+    return re.compile(r'(https?://[^/]+\b(?:/.*?))(?=\s|\)|$)')
+
+
+def match_and_get_urls(string):
+    urls = []
+
+    for match in compile_url_regex_pattern().findall(string):
+        urls.append(match)
+
+    print(urls)
+    return urls
+
+
+def match_and_replace_urls(string):
+    matches = compile_url_regex_pattern().finditer(string)
+
+    if matches is not None:
+        for match in matches:
+            domain = match.group(1)
+            string = string.replace(match.group(), f'{LINK}{domain}{RESET}')
+
+    return string
 
 
 def return_to_main():

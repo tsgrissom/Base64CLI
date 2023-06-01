@@ -26,7 +26,6 @@ def ask_method(inp):
 
 
 # TODO Command help
-# TODO Bard recommends using argparse to simplify the method specification
 # TODO Comments throughout, especially _constants & _functions
 
 should_encode = False

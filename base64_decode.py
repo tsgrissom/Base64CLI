@@ -1,5 +1,5 @@
 from _constants import ACTION, DANGER, EXIT_CODES, SUCCESS, RESET, RETURN_CODES, QUIT_ACTION_STR
-from _functions import create_action_string, log_and_exit, return_to_main, sanitize_output
+from _functions import create_action_string, log_and_exit, match_and_get_urls, match_and_replace_urls, return_to_main, sanitize_output
 from binascii import Error
 from colorama import Fore
 from pybase64 import b64decode
@@ -12,8 +12,9 @@ def display_and_copy(output, nocopy):
 
     # Decoded contents might contain links, if they do they should be colored blue
     # TODO Replace with regex find and replace
-    if output.__contains__("https://") or output.__contains__("http://"):
-        display = Fore.BLUE.join(output)
+    # TODO Change style of output
+    urls = match_and_get_urls(display)
+    display = match_and_replace_urls(display)
 
     sanitized = sanitize_output(display)
     display = sanitized[0]

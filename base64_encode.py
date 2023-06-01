@@ -6,16 +6,16 @@ from pyperclip import copy
 from sys import argv
 
 
-def display_and_copy(input, output, nocopy=False):
-    sanitized = sanitize_output(output)
-    output = sanitized[0]
+def display_and_copy(inp, out, nocopy=False):
+    sanitized = sanitize_output(out)
+    out = sanitized[0]
     copyable = sanitized[1]
 
-    print(f'{ACTION} \u2022 Your input: {RESET}"{input}"')
-    print(f'{SUCCESS} \u2937 Encoded: {RESET}{output}')
+    print(f'{ACTION} \u2022 Your input: {RESET}"{inp}"')
+    print(f'{SUCCESS} \u2937 Encoded: {RESET}{out}')
 
     if copyable and not nocopy:
-        copy(output)
+        copy(out)
         print(f'{ACTION}Copied encoded string to system clipboard{RESET}')
 
 

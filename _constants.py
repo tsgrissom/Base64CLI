@@ -4,6 +4,7 @@ ACTION = Fore.CYAN
 ADVISE = Fore.LIGHTRED_EX
 DANGER = Fore.RED
 EXIT_CODES = ['q', 'quit', 'exit', 'end']
+LINK = Fore.BLUE
 RESET = Style.RESET_ALL
 RETURN_CODES = ['return', 'back', 'menu', 'main']
 SUCCESS = Fore.GREEN
