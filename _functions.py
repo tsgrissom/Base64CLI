@@ -40,7 +40,7 @@ def equals_any(compare, *to):
 
 
 def log_and_exit(filename, exitcode=0, thankful=True):
-    exit_msg = f'{ADVISE}Exiting {WARNING}{path.basename(filename)}{RESET}{ADVISE}...'
+    exit_msg = f'  Exiting {WARNING}{path.basename(filename)}{RESET}...'
     if thankful:
         exit_msg += f" Thank you for using Base64CLI :){RESET}"
     else:

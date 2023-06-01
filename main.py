@@ -28,7 +28,6 @@ def ask_method(inp):
 # TODO Command help
 # TODO Bard recommends using argparse to simplify the method specification
 # TODO Comments throughout, especially _constants & _functions
-# TODO Gracefully exit KeyboardInterrupt
 
 should_encode = False
 should_decode = False
@@ -49,6 +48,7 @@ try:
 
         if input_compare in EXIT_CODES:
             terminate = True
+            log_and_exit(__file__)
             continue
 
         if should_encode or input_compare in ENCODE_SUBS:

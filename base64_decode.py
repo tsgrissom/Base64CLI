@@ -1,4 +1,4 @@
-from _constants import ACTION, DANGER, EXIT_CODES, SUCCESS, RESET, WARNING, QUIT_ACTION_STR
+from _constants import ACTION, DANGER, EXIT_CODES, SUCCESS, RESET, RETURN_CODES, QUIT_ACTION_STR
 from _functions import create_action_string, log_and_exit, return_to_main, sanitize_output
 from binascii import Error
 from colorama import Fore
@@ -11,6 +11,7 @@ def display_and_copy(output, nocopy):
     display = output
 
     # Decoded contents might contain links, if they do they should be colored blue
+    # TODO Replace with regex find and replace
     if output.__contains__("https://") or output.__contains__("http://"):
         display = Fore.BLUE.join(output)
 
@@ -44,13 +45,15 @@ try:
             break
 
         try:
-            decoded = b64decode(b64, validate=True)
-            decoded_str = decoded.decode('utf-8').strip()
             no_copy = False
 
-            for a in argv:
-                if a.lower() == '--nocopy' or a.lower() == '-nc':
-                    no_copy = True
+            if b64.endswith(' --nocopy' or b64.endswith(' -nc')):
+                no_copy = True
+                b64 = b64.removesuffix(' --nocopy')
+                b64 = b64.removesuffix(' -nc')
+
+            decoded = b64decode(b64, validate=True)
+            decoded_str = decoded.decode('utf-8').strip()
 
             # Returns bytes, needs to be decoded when displayed
             display_and_copy(decoded_str, no_copy)
@@ -58,7 +61,7 @@ try:
             action_str = create_action_string('y', 'n', 'return', QUIT_ACTION_STR)
             another = input(f'> Do you have another hash to decode? {action_str} ').lower()
 
-            if another == 'return' or another == 'menu' or another == 'back':
+            if another in RETURN_CODES:
                 return_to_main()
                 break
             elif another == 'y' or another == 'yes':
@@ -78,5 +81,4 @@ try:
             print(f'{DANGER}Failed to decode hash "{b64}" with UTF-8!{RESET}')
             b64 = str()
 except KeyboardInterrupt:
-    print()
-log_and_exit(__file__)
+    log_and_exit(__file__)
