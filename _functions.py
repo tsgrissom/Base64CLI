@@ -40,6 +40,10 @@ def create_action_string(*actions, colored=True, last_use_or=True):
 
 # TODO Reconsider how this is set up
 def sanitize_output(output):
+    """
+    Sanitizes strings of double linebreaks :param output: The string to sanitize :return: A two-value tuple where the
+    first value is the sanitized string, the second is a bool representing if any linebreaks were found
+    """
     copyable = True
     display = output
     if "\n" in output:
@@ -142,8 +146,12 @@ def compile_url_regex_pattern() -> Pattern:
     return re.compile(r'(https?://[^/]+\b(?:/.*?))(?=\s|\)|$)')
 
 
-# TODO Docs
 def match_and_get_urls(string):
+    """
+    Grabs all URLs contained in the string and assembles them in an array.
+    :param string: The string to check.
+    :return: The array of URLs as strings, or None is no URLs were found.
+    """
     urls = []
 
     for match in compile_url_regex_pattern().findall(string):
@@ -155,8 +163,12 @@ def match_and_get_urls(string):
     return urls
 
 
-# TODO Docs
 def match_and_replace_urls(string):
+    """
+    Substitutes all URLs in a string with themselves prepended with the LINK color constant (console blue.)
+    :param string: The string to replace URLs within.
+    :return: The string with the URLs color-coded for console output.
+    """
     matches = compile_url_regex_pattern().finditer(string)
 
     if matches is not None:
@@ -180,16 +192,21 @@ def on_keyboard_interrupt(filename):
     log_and_exit(filename)
 
 
-# TODO Docs
 def return_to_main():
+    """
+    Prints a newline and runs main.py to return to the application's super menu.
+    """
     print('')
     run_py('main.py')
     exit()
 
 
-# TODO Docs
 # TODO Improve to replace calls of subprocess.run in main.py
 def run_py(pyfile):
+    """
+    Runs a python script by substituting the environment's PYTHON_CMD for the path executable and appending the
+    pyfile to it :param pyfile: The Python script to execute
+    """
     if not pyfile.endswith('.py'):
         pyfile += '.py'
     run([getenv('PYTHON_CMD', 'python'), pyfile])
