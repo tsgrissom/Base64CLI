@@ -1,4 +1,4 @@
-from _constants import DANGER, CODES_EXIT, RESET, QUIT_ACTION_STR
+from _constants import DANGER, CODES_EXIT, STR_QUIT_ACTION, RESET
 from _functions import create_action_string, get_python_cmd, log_and_exit, on_keyboard_interrupt, run_py
 from subprocess import run
 from sys import argv
@@ -11,7 +11,7 @@ DECODE_FLAGS = ['--decode', '-d']
 
 
 def ask_method(inp):
-    action_str = create_action_string('enc', 'dec', QUIT_ACTION_STR)
+    action_str = create_action_string('enc', 'dec', STR_QUIT_ACTION)
     resp = input(f'> Do you want to encode or decode your input "{inp}"? {action_str} ').lower()
 
     if resp in CODES_EXIT:

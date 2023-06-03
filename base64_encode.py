@@ -37,7 +37,7 @@ if len(argv) > 1:
 try:
     while not terminate:
         if unencoded == '':
-            unencoded = input(f'> Enter the input you would like to encode ({QUIT_ACTION_STR}): ').strip()
+            unencoded = input(f'> Enter the input you would like to encode ({STR_QUIT_ACTION}): ').strip()
         else:
             print(f'Encoding input "{unencoded}" supplied as command-line argument')
 
@@ -59,7 +59,7 @@ try:
 
             display_and_copy(unencoded, encoded, no_copy)
 
-            action_string = create_action_string('y', 'n', 'return', QUIT_ACTION_STR)
+            action_string = create_action_string('y', 'n', 'return', STR_QUIT_ACTION)
             another = input(f'> Do you have another string to encode? {action_string} ').lower()
 
             if another in CODES_RETURN:

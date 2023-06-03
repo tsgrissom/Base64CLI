@@ -44,7 +44,7 @@ if len(argv) > 1:
 try:
     while not terminate:
         if b64 == '':
-            b64 = input(f'> Enter your base64 hash ({QUIT_ACTION_STR}): ').strip()
+            b64 = input(f'> Enter your base64 hash ({STR_QUIT_ACTION}): ').strip()
         else:
             print(f'Decoding hash "{b64}" supplied as command-line argument')
 
@@ -67,7 +67,7 @@ try:
             # Returns bytes, needs to be decoded when displayed
             display_and_copy(decoded_str, no_copy)
 
-            action_str = create_action_string('y', 'n', 'return', QUIT_ACTION_STR)
+            action_str = create_action_string('y', 'n', 'return', STR_QUIT_ACTION)
             another = input(f'> Do you have another hash to decode? {action_str} ').lower()
 
             if another in CODES_RETURN:
