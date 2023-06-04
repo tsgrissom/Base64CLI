@@ -10,10 +10,17 @@ DECODE_SUBS = ['decode', 'dec', 'd']
 ENCODE_FLAGS = ['--encode', '-e']
 DECODE_FLAGS = ['--decode', '-d']
 
+STRING_COLORED_RETURN = f'{WARNING}\u2937{RESET}'
 STRINGS_HELP = [
     f'{WARNING}Base64CLI Help{RESET}',
-    ' encode: Unencoded string \u2794 Base64 hash',
-    ' decode: Base64 hash \u2794 Unencoded string'
+    'encode: Unencoded string \u2794 Base64 hash',
+    f'{STRING_COLORED_RETURN} Aliases: enc, e',
+    f'{STRING_COLORED_RETURN} Flags:',
+    '   --nocopy or -nc: Prevents copying of resulting hash',
+    'decode: Base64 hash \u2794 Unencoded string',
+    f'{STRING_COLORED_RETURN} Aliases: dec, d',
+    f'{STRING_COLORED_RETURN} Flags:',
+    '   --nocopy or -nc: Prevents copying of decoded string'
 ]
 
 
@@ -31,8 +38,8 @@ def ask_method(inp):
         print(f'{DANGER}Unknown base64 method "{inp}"{RESET}')
 
 
-# TODO Command help
-# TODO Comments throughout, especially _constants & _functions
+# TODO Greater command help
+# TODO Tab completion
 
 should_encode = False
 should_decode = False
