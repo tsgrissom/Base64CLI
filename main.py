@@ -16,8 +16,7 @@ def ask_method(inp):
 
     if resp in CODES_EXIT:
         log_and_exit(__file__)
-
-    if resp in ENCODE_SUBS:
+    elif resp in ENCODE_SUBS:
         run([get_python_cmd(), 'base64_encode.py', inp])
     elif resp in DECODE_SUBS:
         run([get_python_cmd(), 'base64_decode.py', inp])
