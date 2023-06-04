@@ -2,7 +2,7 @@ from subprocess import run
 from sys import argv
 
 from _constants import DANGER, CODES_EXIT, CODES_HELP, STR_QUIT_ACTION, RESET, WARNING
-from _functions import create_action_string, get_python_cmd, log_and_exit, on_keyboard_interrupt, run_py
+from _functions import create_action_string, dprint, get_python_cmd, is_base64, log_and_exit, on_keyboard_interrupt, run_py
 
 ENCODE_SUBS = ['encode', 'enc', 'e']
 DECODE_SUBS = ['decode', 'dec', 'd']
@@ -45,7 +45,6 @@ def print_help():
 
 # TODO Greater command help
 # TODO Tab completion
-# TODO Check if base64 hash detected, ask if they want to decode it
 
 should_encode = False
 should_decode = False
@@ -60,6 +59,8 @@ terminate = False
 try:
     while not terminate:
         prompt = f'[Base64CLI] Do you need to encode or decode for base64? {create_action_string("enc", "dec")} '
+        # Somewhat confusing varname, this is just the user input for the main python process. It could be an action,
+        #  an exit code, a help code, or otherwise it is either an encoded or a string to be encoded.
         input_method = input(prompt)
         input_compare = input_method.lower().strip()
         # Preserve the capital letters of the user input
@@ -77,7 +78,10 @@ try:
             run_py('base64_decode.py')
             terminate = True
         else:
-            # Try to salvage their input by asking them which method they would like to input their string to
-            ask_method(input_method)
+            if is_base64(input_method):
+                dprint('Automatically detected a base64 hash as input, passing on for decoding...')
+                run([get_python_cmd(), 'base64_decode.py', input_method])
+            else:
+                run([get_python_cmd(), 'base64_encode.py', input_method])
 except KeyboardInterrupt:
     on_keyboard_interrupt(__file__)

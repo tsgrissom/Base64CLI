@@ -3,6 +3,7 @@ import re
 from re import Pattern
 from subprocess import run
 
+import base64
 from dotenv import load_dotenv
 
 from _constants import ACTION, LINK, RESET, WARNING
@@ -129,6 +130,20 @@ def is_debugging():
     :return: Whether debugging is active in the environment.
     """
     return bool(str.lower(getenv('DEBUG', 'False')))
+
+
+def is_base64(string):
+    """
+    Checks if the supplied string is a base64 hash.
+    :param string: The string to check.
+    :return: Whether the string is a base64 hash.
+    """
+    # noinspection PyBroadException
+    try:
+        base64.b64decode(string)
+        return True
+    except:
+        return False
 
 
 def is_valid_url(url):

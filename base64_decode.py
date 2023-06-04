@@ -5,7 +5,7 @@ from pybase64 import b64decode
 from pyperclip import copy
 
 from _constants import *
-from _functions import create_action_string, dprint, is_debugging, match_and_get_urls
+from _functions import create_action_string, dprint, is_debugging, log_and_exit, match_and_get_urls
 from _functions import match_and_replace_urls, on_keyboard_interrupt, return_to_main, run_py, sanitize_output
 
 
@@ -48,7 +48,7 @@ try:
         if b64 == '':
             b64 = input(f'> Enter your base64 hash ({STR_QUIT_ACTION}): ').strip()
         else:
-            print(f'Decoding hash "{b64}" supplied as command-line argument')
+            print(f'> Decoding hash "{b64}" supplied as command-line argument')
 
         if b64.lower() in CODES_EXIT:
             run_py('main.py')
@@ -93,3 +93,5 @@ try:
             b64 = str()
 except KeyboardInterrupt:
     on_keyboard_interrupt(__file__)
+
+log_and_exit(__file__)

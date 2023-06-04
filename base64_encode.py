@@ -5,7 +5,8 @@ from pybase64 import b64encode_as_string
 from pyperclip import copy
 
 from _constants import *
-from _functions import create_action_string, on_keyboard_interrupt, return_to_main, run_py, sanitize_output
+from _functions import create_action_string, dprint, log_and_exit, on_keyboard_interrupt
+from _functions import return_to_main, run_py, sanitize_output
 
 
 def display_and_copy(inp, out, nocopy=False):
@@ -40,7 +41,7 @@ try:
         if unencoded == '':
             unencoded = input(f'> Enter the input you would like to encode ({STR_QUIT_ACTION}): ').strip()
         else:
-            print(f'Encoding input "{unencoded}" supplied as command-line argument')
+            dprint(f'Encoding input "{unencoded}" supplied as command-line argument')
 
         if unencoded.lower() in CODES_EXIT:
             run_py('main.py')
@@ -49,7 +50,7 @@ try:
         try:
             no_copy = False
 
-            # Simple command arg parsing without needing argparse
+            # TODO Replace with argparse
             if unencoded.endswith(' --nocopy' or unencoded.endswith(' -nc')):
                 no_copy = True
                 unencoded = unencoded.removesuffix(' --nocopy')
@@ -81,3 +82,5 @@ try:
             unencoded = str()
 except KeyboardInterrupt:
     on_keyboard_interrupt(__file__)
+
+log_and_exit(__file__)
