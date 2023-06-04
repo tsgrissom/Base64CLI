@@ -5,7 +5,7 @@ from pybase64 import b64encode_as_string
 from pyperclip import copy
 
 from _constants import *
-from _functions import create_action_string, log_and_exit, on_keyboard_interrupt, return_to_main, sanitize_output
+from _functions import create_action_string, on_keyboard_interrupt, return_to_main, run_py, sanitize_output
 
 
 def display_and_copy(inp, out, nocopy=False):
@@ -43,7 +43,7 @@ try:
             print(f'Encoding input "{unencoded}" supplied as command-line argument')
 
         if unencoded.lower() in CODES_EXIT:
-            log_and_exit(__file__)
+            run_py('main.py')
             break
 
         try:

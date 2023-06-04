@@ -5,8 +5,8 @@ from pybase64 import b64decode
 from pyperclip import copy
 
 from _constants import *
-from _functions import create_action_string, dprint, is_debugging, log_and_exit, match_and_get_urls
-from _functions import match_and_replace_urls, on_keyboard_interrupt, return_to_main, sanitize_output
+from _functions import create_action_string, dprint, is_debugging, match_and_get_urls
+from _functions import match_and_replace_urls, on_keyboard_interrupt, return_to_main, run_py, sanitize_output
 
 
 # Decoded contents might contain links, if they do they should be colored blue
@@ -51,7 +51,8 @@ try:
             print(f'Decoding hash "{b64}" supplied as command-line argument')
 
         if b64.lower() in CODES_EXIT:
-            log_and_exit(__file__)
+            run_py('main.py')
+            # In this context, an exit code should return to main.py
             break
 
         try:
