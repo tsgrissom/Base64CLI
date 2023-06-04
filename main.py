@@ -68,20 +68,23 @@ try:
         if input_compare in CODES_EXIT:
             terminate = True
             log_and_exit(__file__)
-            continue
+            break
         elif input_compare in CODES_HELP:
             print_help()
         elif should_encode or input_compare in ENCODE_SUBS:
+            terminate = True
             run_py('base64_encode.py')
-            terminate = True
+            break
         elif should_decode or input_compare in DECODE_SUBS:
-            run_py('base64_decode.py')
             terminate = True
+            run_py('base64_decode.py')
+            break
         else:
             if is_base64(input_method):
                 dprint('Automatically detected a base64 hash as input, passing on for decoding...')
                 run([get_python_cmd(), 'base64_decode.py', input_method])
             else:
                 run([get_python_cmd(), 'base64_encode.py', input_method])
+            break
 except KeyboardInterrupt:
     on_keyboard_interrupt(__file__)
