@@ -1,9 +1,11 @@
-from _constants import ACTION, LINK, RESET, WARNING
-from dotenv import load_dotenv
 from os import path, getenv
 import re
 from re import Pattern
 from subprocess import run
+
+from dotenv import load_dotenv
+
+from _constants import ACTION, LINK, RESET, WARNING
 
 load_dotenv()
 

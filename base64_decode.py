@@ -1,10 +1,12 @@
-from _constants import *
-from _functions import create_action_string, dprint, is_debugging, log_and_exit, match_and_get_urls, match_and_replace_urls, on_keyboard_interrupt, return_to_main, sanitize_output
 from binascii import Error
-from colorama import Fore
+from sys import argv
+
 from pybase64 import b64decode
 from pyperclip import copy
-from sys import argv
+
+from _constants import *
+from _functions import create_action_string, dprint, is_debugging, log_and_exit, match_and_get_urls
+from _functions import match_and_replace_urls, on_keyboard_interrupt, return_to_main, sanitize_output
 
 
 # Decoded contents might contain links, if they do they should be colored blue

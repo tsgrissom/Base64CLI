@@ -1,10 +1,11 @@
-from _constants import *
-from _functions import create_action_string, log_and_exit, on_keyboard_interrupt, return_to_main, sanitize_output
 from binascii import Error
+from sys import argv
+
 from pybase64 import b64encode_as_string
 from pyperclip import copy
-from sys import argv
-from time import sleep
+
+from _constants import *
+from _functions import create_action_string, log_and_exit, on_keyboard_interrupt, return_to_main, sanitize_output
 
 
 def display_and_copy(inp, out, nocopy=False):
