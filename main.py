@@ -10,16 +10,16 @@ DECODE_SUBS = ['decode', 'dec', 'd']
 ENCODE_FLAGS = ['--encode', '-e']
 DECODE_FLAGS = ['--decode', '-d']
 
-STRING_COLORED_RETURN = f'{WARNING}\u2937{RESET}'
-STRINGS_HELP = [
+STR_COLORED_RETURN = f'{WARNING}\u2937{RESET}'
+STR_HELP = [
     f'{WARNING}Base64CLI Help{RESET}',
     'encode: Unencoded string \u2794 Base64 hash',
-    f'{STRING_COLORED_RETURN} Aliases: enc, e',
-    f'{STRING_COLORED_RETURN} Flags:',
+    f'{STR_COLORED_RETURN} Aliases: enc, e',
+    f'{STR_COLORED_RETURN} Flags:',
     '   --nocopy or -nc: Prevents copying of resulting hash',
     'decode: Base64 hash \u2794 Unencoded string',
-    f'{STRING_COLORED_RETURN} Aliases: dec, d',
-    f'{STRING_COLORED_RETURN} Flags:',
+    f'{STR_COLORED_RETURN} Aliases: dec, d',
+    f'{STR_COLORED_RETURN} Flags:',
     '   --nocopy or -nc: Prevents copying of decoded string'
 ]
 
@@ -63,7 +63,7 @@ try:
             log_and_exit(__file__)
             continue
         elif input_compare in CODES_HELP:
-            print_lines(STRINGS_HELP)
+            print_lines(STR_HELP)
         elif should_encode or input_compare in ENCODE_SUBS:
             run_py('base64_encode.py')
             terminate = True
