@@ -68,7 +68,7 @@ try:
             display_and_copy(decoded_str, no_copy)
 
             action_str = create_action_string('y', 'n', 'return', STR_QUIT_ACTION)
-            another = input(f'> Do you have another hash to decode? {action_str} ').lower()
+            another = input(f'> Do you have another hash to decode? {action_str} ').lower().strip()
 
             if another in CODES_RETURN:
                 return_to_main()

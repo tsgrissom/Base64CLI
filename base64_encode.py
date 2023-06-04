@@ -60,7 +60,7 @@ try:
             display_and_copy(unencoded, encoded, no_copy)
 
             action_string = create_action_string('y', 'n', 'return', STR_QUIT_ACTION)
-            another = input(f'> Do you have another string to encode? {action_string} ').lower()
+            another = input(f'> Do you have another string to encode? {action_string} ').lower().strip()
 
             if another in CODES_RETURN:
                 return_to_main()

@@ -12,7 +12,7 @@ DECODE_FLAGS = ['--decode', '-d']
 
 def ask_method(inp):
     action_str = create_action_string('enc', 'dec', STR_QUIT_ACTION)
-    resp = input(f'> Do you want to encode or decode your input "{inp}"? {action_str} ').lower()
+    resp = input(f'> Do you want to encode or decode your input "{inp}"? {action_str} ').lower().strip()
 
     if resp in CODES_EXIT:
         log_and_exit(__file__)
@@ -42,7 +42,7 @@ try:
     while not terminate:
         prompt = f'[Base64CLI] Do you need to encode or decode for base64? {create_action_string("enc", "dec")} '
         input_method = input(prompt)
-        input_compare = input_method.lower()
+        input_compare = input_method.lower().strip()
         # Preserve the capital letters of the user input
 
         if input_compare in CODES_EXIT:
