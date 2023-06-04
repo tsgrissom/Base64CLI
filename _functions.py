@@ -194,6 +194,11 @@ def on_keyboard_interrupt(filename):
     log_and_exit(filename)
 
 
+def print_lines(lines):
+    for line in lines:
+        print(line)
+
+
 def return_to_main():
     """
     Prints a newline and runs main.py to return to the application's super menu.

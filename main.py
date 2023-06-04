@@ -1,14 +1,20 @@
 from subprocess import run
 from sys import argv
 
-from _constants import DANGER, CODES_EXIT, STR_QUIT_ACTION, RESET
-from _functions import create_action_string, get_python_cmd, log_and_exit, on_keyboard_interrupt, run_py
+from _constants import DANGER, CODES_EXIT, CODES_HELP, STR_QUIT_ACTION, RESET, WARNING
+from _functions import create_action_string, get_python_cmd, log_and_exit, on_keyboard_interrupt, print_lines, run_py
 
 ENCODE_SUBS = ['encode', 'enc', 'e']
 DECODE_SUBS = ['decode', 'dec', 'd']
 
 ENCODE_FLAGS = ['--encode', '-e']
 DECODE_FLAGS = ['--decode', '-d']
+
+STRINGS_HELP = [
+    f'{WARNING}Base64CLI Help{RESET}',
+    ' encode: Unencoded string \u2794 Base64 hash',
+    ' decode: Base64 hash \u2794 Unencoded string'
+]
 
 
 def ask_method(inp):
@@ -49,8 +55,9 @@ try:
             terminate = True
             log_and_exit(__file__)
             continue
-
-        if should_encode or input_compare in ENCODE_SUBS:
+        elif input_compare in CODES_HELP:
+            print_lines(STRINGS_HELP)
+        elif should_encode or input_compare in ENCODE_SUBS:
             run_py('base64_encode.py')
             terminate = True
         elif should_decode or input_compare in DECODE_SUBS:
