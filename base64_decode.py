@@ -26,13 +26,13 @@ def display_and_copy(output, nocopy):
     # 2. Whether said string is copyable (does it contain linebreaks?)
     sanitized = sanitize_output(display)
     display = sanitized[0]
-    should_copy = sanitized[1]
+    copyable = sanitized[1]
 
-    print(f'{SUCCESS}Decoded hash: {RESET}{Fore.BLUE}{display}')
+    print(f'{SUCCESS}Decoded hash: {RESET}{display}')
 
-    if should_copy and not nocopy:
+    if copyable and not nocopy:
         copy(output)
-        print(f'{ACTION}Copied decoded to system clipboard{RESET}')
+        print(f'{WARNING}Copied decoded to system clipboard{RESET}')
 
 
 b64 = str()
@@ -58,7 +58,6 @@ try:
             no_copy = False
 
             if b64.endswith(' --nocopy' or b64.endswith(' -nc')):
-
                 no_copy = True
                 b64 = b64.removesuffix(' --nocopy')
                 b64 = b64.removesuffix(' -nc')

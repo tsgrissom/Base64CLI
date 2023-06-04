@@ -2,7 +2,7 @@ from subprocess import run
 from sys import argv
 
 from _constants import DANGER, CODES_EXIT, CODES_HELP, STR_QUIT_ACTION, RESET, WARNING
-from _functions import create_action_string, get_python_cmd, log_and_exit, on_keyboard_interrupt, print_lines, run_py
+from _functions import create_action_string, get_python_cmd, log_and_exit, on_keyboard_interrupt, run_py
 
 ENCODE_SUBS = ['encode', 'enc', 'e']
 DECODE_SUBS = ['decode', 'dec', 'd']
@@ -38,8 +38,14 @@ def ask_method(inp):
         print(f'{DANGER}Unknown base64 method "{inp}"{RESET}')
 
 
+def print_help():
+    for line in STR_HELP:
+        print(line)
+
+
 # TODO Greater command help
 # TODO Tab completion
+# TODO Check if base64 hash detected, ask if they want to decode it
 
 should_encode = False
 should_decode = False
@@ -63,7 +69,7 @@ try:
             log_and_exit(__file__)
             continue
         elif input_compare in CODES_HELP:
-            print_lines(STR_HELP)
+            print_help()
         elif should_encode or input_compare in ENCODE_SUBS:
             run_py('base64_encode.py')
             terminate = True
