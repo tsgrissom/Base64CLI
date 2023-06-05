@@ -168,17 +168,18 @@ def get_python_cmd():
     return getenv('PYTHON_CMD', 'python')
 
 
-def log_and_exit(filename, exitcode=0, thankful=True):
+def log_and_exit(filename, exitcode=0, thankful=True, color_prefix=f'{WARNING}'):
     """
     Prints a nice exit message including the supplied filename then executes an exit code.
-    :param filename: Usually passed __file__ within the scope it is employed.
+    :param color_prefix: The color prefix to be placed before the filename. Default: f'{WARNING}'
     :param exitcode: The exit code to use when exiting the program. Default 0 (success.)
+    :param filename: Usually passed __file__ within the scope it is employed.
     :param thankful: Whether to append a small thank you to the message. Default True.
     :return:
     """
     if not isinstance(filename, str):
         raise TypeError('filename must be a string')
-    exit_msg = f'[Base64CLI] Exiting {WARNING}{path.basename(filename)}{RESET}...'
+    exit_msg = f'[Base64CLI] Exiting {color_prefix}{path.basename(filename)}{RESET}...'
     if thankful:
         exit_msg += f' Thank you for using Base64CLI \u263A'
     print(exit_msg)
