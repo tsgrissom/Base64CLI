@@ -25,8 +25,8 @@ STR_HELP = [
 
 
 def ask_method(inp):
-    action_str = create_action_string('enc', 'dec', STR_QUIT_ACTION)
-    resp = input(f'> Do you want to encode or decode your input "{inp}"? {action_str} ').lower().strip()
+    method_action_str = create_action_string('enc', 'dec', STR_QUIT_ACTION)
+    resp = input(f'> Do you want to encode or decode your input "{inp}"? {method_action_str} ').lower().strip()
 
     if resp in CODES_EXIT:
         log_and_exit(__file__)
