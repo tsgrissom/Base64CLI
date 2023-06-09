@@ -1,3 +1,4 @@
+import binascii
 from os import path, getenv
 import re
 from re import Pattern
@@ -134,15 +135,19 @@ def is_debugging():
 
 def is_base64(string):
     """
-    Checks if the supplied string is a base64 hash.
+    Checks if the supplied string is a potential base64 hash.
     :param string: The string to check.
     :return: Whether the string is a base64 hash.
     """
-    # noinspection PyBroadException
+    # Check if the string has a length divisible by 4
+    if len(string) % 4 != 0:
+        return False
+
+    # Check if the string is a valid base64 string
     try:
-        base64.b64decode(string)
-        return True
-    except:
+        # Decode the string and encode it back to compare against the original
+        return base64.b64encode(base64.b64decode(string)) == string.encode()
+    except binascii.Error:
         return False
 
 

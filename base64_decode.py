@@ -86,10 +86,8 @@ try:
             terminate = True
             # User has inputted all hashes they wished to decode for the session
         except Error:
-            if len(b64) > 64:
-                b64 = f'{b64[:64]}...'
-                # Truncate length of invalid base64 hash for clean console
-
+            # Truncate length of invalid base64 hash for clean console
+            b64 = b64 if len(b64) <= 64 else f'{b64[:64]}...'
             print(f'{DANGER}Invalid base64 hash "{b64}"{RESET}')
             b64 = str()
             # Program repeats because terminate != False

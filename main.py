@@ -81,8 +81,19 @@ try:
             break
         else:
             if is_base64(input_method):
-                dprint('Automatically detected a base64 hash as input, passing on for decoding...')
-                run([get_python_cmd(), 'base64_decode.py', input_method])
+                dprint('Automatically detected a base64 hash as input, asking user...')
+
+                action_str = create_action_string('y', 'n')
+                input_truncated = input_method if len(input_compare) <= 24 else f'{input_method[:24]}...'
+                prompt = f'Found potential base64 hash "{input_truncated}", would you like to decode it? {action_str}'
+                proceed = input(f'> {prompt} ')
+
+                if proceed.lower().strip() in ['y', 'yes', 'proceed', 'continue']:
+                    dprint('User approved decoding of auto-detected hash, passing on...')
+                    run([get_python_cmd(), 'base64_decode.py', input_method])
+                else:
+                    dprint('User aborted decoding of auto-detected hash, continuing...')
+                    continue
             else:
                 run([get_python_cmd(), 'base64_encode.py', input_method])
             break
