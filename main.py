@@ -45,6 +45,7 @@ def print_help():
 
 # TODO Greater command help
 # TODO Tab completion
+# TODO Make a true CLI frontend
 
 should_encode = False
 should_decode = False
