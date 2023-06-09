@@ -4,7 +4,7 @@ from sys import argv
 from pybase64 import b64encode_as_string
 from pyperclip import copy
 
-from _constants import *
+from _constants import CODES_EXIT, CODES_RETURN, DANGER, RESET, STR_QUIT_ACTION, SUCCESS, WARNING
 from _functions import create_action_string, dprint, log_and_exit, on_keyboard_interrupt
 from _functions import return_to_main, run_py, sanitize_output
 
