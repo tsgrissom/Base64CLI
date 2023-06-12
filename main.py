@@ -51,6 +51,7 @@ def print_help():
 
 # TODO Tab completion
 # TODO Convert this file to argparse
+# TODO Toggle debugging from within CLI
 
 should_encode = False
 should_decode = False

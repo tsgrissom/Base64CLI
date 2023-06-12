@@ -12,6 +12,18 @@ from _constants import ACTION, LINK, RESET, WARNING
 load_dotenv()
 
 
+def beautify_filename(filename: str) -> str:
+    # Ex: base64_encode.py -> Base64 Encode
+    beautiful = path.basename(filename).replace('.py', '')
+    split = beautiful.split('_')
+    beautiful = ''
+    for s in split:
+        beautiful += f'{s.capitalize()} '
+    beautiful = beautiful.strip()
+
+    return beautiful
+
+
 def create_action_string(*actions, colored=True, entry_prefix=f'{ACTION}', delimiter='/', last_use_or=True,
                          prefix='(', suffix=')'):
     """
@@ -173,20 +185,26 @@ def get_python_cmd():
     return getenv('PYTHON_CMD', 'python')
 
 
-def log_and_exit(filename, exitcode=0, thankful=True, color_prefix=f'{WARNING}'):
+def log_and_exit(filename, exitcode=0, should_beautify=True, thankful=True, color_prefix=f'{WARNING}'):
     """
     Prints a nice exit message including the supplied filename then executes an exit code.
     :param color_prefix: The color prefix to be placed before the filename. Default: f'{WARNING}'
     :param exitcode: The exit code to use when exiting the program. Default 0 (success.)
     :param filename: Usually passed __file__ within the scope it is employed.
+    :param should_beautify: Whether to apply beautify_filename to the provided filename.
     :param thankful: Whether to append a small thank you to the message. Default True.
     :return:
     """
     if not isinstance(filename, str):
         raise TypeError('filename must be a string')
-    exit_msg = f'[Base64CLI] Exiting {color_prefix}{path.basename(filename)}{RESET}...'
+
+    filename = beautify_filename(filename) if should_beautify else path.basename(filename)
+    if filename == 'Main':
+        filename = 'Base64CLI'
+        thankful = False
+    exit_msg = f'[Base64CLI] Exiting {color_prefix}{filename}{RESET}...'
     if thankful:
-        exit_msg += f' Thank you for using Base64CLI \u263A'
+        exit_msg += ' Thank you for using Base64CLI \u263A'
     print(exit_msg)
     exit(exitcode)
 
