@@ -261,8 +261,7 @@ def return_to_main(should_newline=True):
     exit()
 
 
-# TODO Improve to replace calls of subprocess.run in main.py
-def run_py(pyfile):
+def run_py(pyfile, *append):
     """
     Runs a python script by substituting the environment's PYTHON_CMD for the path executable and appending the
     pyfile to it :param pyfile: The Python script to execute
@@ -271,4 +270,12 @@ def run_py(pyfile):
         raise TypeError('pyfile must be a string')
     if not pyfile.endswith('.py'):
         pyfile += '.py'
-    run([getenv('PYTHON_CMD', 'python'), pyfile])
+
+    py_command = getenv('PYTHON_CMD', 'python')
+    run_contents = [py_command, pyfile]
+
+    if append is not None:
+        for a in append:
+            run_contents.append(a)
+
+    run(run_contents)

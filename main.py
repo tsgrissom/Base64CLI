@@ -31,9 +31,9 @@ def ask_method(inp):
     if resp in CODES_EXIT:
         log_and_exit(__file__)
     elif resp in ENCODE_SUBS:
-        run([get_python_cmd(), 'base64_encode.py', inp])
+        run_py('base64_encode.py', inp)
     elif resp in DECODE_SUBS:
-        run([get_python_cmd(), 'base64_decode.py', inp])
+        run_py('base64_decode.py', inp)
     else:
         print(f'{DANGER}Unknown base64 method "{inp}"{RESET}')
 
