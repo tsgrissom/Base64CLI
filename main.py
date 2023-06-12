@@ -10,6 +10,11 @@ DECODE_SUBS = ['decode', 'dec', 'd']
 ENCODE_FLAGS = ['--encode', '-e']
 DECODE_FLAGS = ['--decode', '-d']
 
+PY_FILES = {
+    'encode': 'base64_encode.py',
+    'decode': 'base64_decode.py'
+}
+
 STR_COLORED_RETURN = f'{WARNING}\u2937{RESET}'
 STR_HELP = [
     f'{WARNING}Base64CLI Help{RESET}',
@@ -33,9 +38,9 @@ def ask_method(inp):
     if resp in CODES_EXIT:
         log_and_exit(__file__)
     elif resp in ENCODE_SUBS:
-        run_py('base64_encode.py', inp)
+        run_py(PY_FILES['encode'], inp)
     elif resp in DECODE_SUBS:
-        run_py('base64_decode.py', inp)
+        run_py(PY_FILES['decode'], inp)
     else:
         print(f'{DANGER}Unknown base64 method "{inp}"{RESET}')
 
@@ -74,11 +79,11 @@ try:
             print_help()
         elif should_encode or input_compare in ENCODE_SUBS:
             terminate = True
-            run_py('base64_encode.py')
+            run_py(PY_FILES['encode'])
             break
         elif should_decode or input_compare in DECODE_SUBS:
             terminate = True
-            run_py('base64_decode.py')
+            run_py(PY_FILES['decode'])
             break
         else:
             if is_base64(input_method):
