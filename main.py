@@ -51,6 +51,7 @@ def print_help():
 
 
 # TODO Tab completion
+# TODO Convert this file to argparse
 
 should_encode = False
 should_decode = False
@@ -96,12 +97,12 @@ try:
 
                 if proceed.lower().strip() in ['y', 'yes', 'proceed', 'continue']:
                     dprint('User approved decoding of auto-detected hash, passing on...')
-                    run([get_python_cmd(), 'base64_decode.py', input_method])
+                    run_py(PY_FILES['decode'], '--hash', input_method)
                 else:
                     dprint('User aborted decoding of auto-detected hash, continuing...')
                     continue
             else:
-                run([get_python_cmd(), 'base64_encode.py', input_method])
+                run_py(PY_FILES['encode'], '--input', input_method)
             break
 except KeyboardInterrupt:
     on_keyboard_interrupt(__file__)

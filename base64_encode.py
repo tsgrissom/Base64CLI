@@ -1,5 +1,4 @@
 import binascii
-from sys import argv
 
 import argparse
 from pybase64 import b64encode_as_string
@@ -65,13 +64,13 @@ def main():
                 action_str = create_action_string('y', 'n', 'return', STR_QUIT_ACTION)
                 another = input(f'> Do you have another string to encode? {action_str} ').lower().strip()
 
-                if another in CODES_EXIT:
-                    break
+                if another in ['y', 'yes']:
+                    continue
                 elif another in CODES_RETURN:
                     return_to_main()
                     break
-                elif another in ['y', 'yes']:
-                    continue
+                else:
+                    break
 
             except binascii.Error:
                 unencoded = unencoded if len(unencoded) <= 64 else f'{unencoded[:unencoded]}...'

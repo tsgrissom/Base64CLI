@@ -75,13 +75,13 @@ def main():
                     b64 = another
                     continue
 
-                if another_compare in ['yes', 'y']:
+                if another_compare in ['y', 'yes']:
                     b64 = None
                     continue
-                if another_compare in CODES_EXIT:
-                    break
                 elif another_compare in CODES_RETURN:
                     return_to_main(should_newline=False)
+                    break
+                else:
                     break
 
             except binascii.Error:
