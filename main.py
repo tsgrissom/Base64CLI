@@ -16,10 +16,12 @@ STR_HELP = [
     'encode: Unencoded string \u2794 Base64 hash',
     f'{STR_COLORED_RETURN} Aliases: enc, e',
     f'{STR_COLORED_RETURN} Flags:',
+    '   --input: The string to encode into a base64 hash',
     '   --nocopy or -nc: Prevents copying of resulting hash',
     'decode: Base64 hash \u2794 Unencoded string',
     f'{STR_COLORED_RETURN} Aliases: dec, d',
     f'{STR_COLORED_RETURN} Flags:',
+    '   --hash: The hash to decode into a string',
     '   --nocopy or -nc: Prevents copying of decoded string'
 ]
 
@@ -43,9 +45,7 @@ def print_help():
         print(line)
 
 
-# TODO Greater command help
 # TODO Tab completion
-# TODO Make a true CLI frontend
 
 should_encode = False
 should_decode = False

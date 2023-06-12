@@ -1,6 +1,7 @@
-from binascii import Error
+import binascii
 from sys import argv
 
+import argparse
 from pybase64 import b64encode_as_string
 from pyperclip import copy
 
@@ -29,58 +30,63 @@ def display_and_copy(inp, out, nocopy=False):
         print(f'{RESET} \u2937 {WARNING}Copied encoded string to system clipboard{RESET}')
 
 
-unencoded = str()
-terminate = False
+def main():
+    arg_help = {
+        'input': 'The string to encode to base64',
+        'nocopy': 'Disable copying the encoded string to the system clipboard'
+    }
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', help=arg_help['input'], metavar='STRING', nargs='?', type=str)
+    parser.add_argument('--nocopy', '-nc', action='store_true', default=False, help=arg_help['nocopy'])
+    args = parser.parse_args()
 
-if len(argv) > 1:
-    unencoded = argv[1]
+    unencoded = args.input
+    no_copy = args.nocopy
 
-# Handles graceful exit from Ctrl+C
-try:
-    while not terminate:
-        if unencoded == '':
-            unencoded = input(f'> Enter the input you would like to encode ({STR_QUIT_ACTION}): ').strip()
-        else:
-            dprint(f'Encoding input "{unencoded}" supplied as command-line argument')
-
-        if unencoded.lower() in CODES_EXIT:
-            run_py('main.py')
-            break
-
+    while True:
         try:
-            no_copy = False
+            if unencoded is None:
+                user_input = input(f'> Enter your string to encode with base64 ({STR_QUIT_ACTION}): ').strip()
 
-            # TODO Replace with argparse
-            if unencoded.endswith(' --nocopy' or unencoded.endswith(' -nc')):
-                no_copy = True
-                unencoded = unencoded.removesuffix(' --nocopy')
-                unencoded = unencoded.removesuffix(' -nc')
+                if user_input.lower() in CODES_EXIT:
+                    break
+                elif user_input.lower() in CODES_RETURN:
+                    return_to_main(should_newline=False)
+                    break
 
-            string_as_bytes = bytes(unencoded, 'utf-8')
-            encoded = b64encode_as_string(string_as_bytes)
+                unencoded = user_input
 
-            display_and_copy(unencoded, encoded, no_copy)
+            try:
+                string_as_bytes = bytes(unencoded, 'utf-8')
+                encoded = b64encode_as_string(string_as_bytes)
 
-            action_string = create_action_string('y', 'n', 'return', STR_QUIT_ACTION)
-            another = input(f'> Do you have another string to encode? {action_string} ').lower().strip()
+                display_and_copy(unencoded, encoded, no_copy)
 
-            if another in CODES_RETURN:
-                return_to_main()
-                break
-            elif another == 'y' or another == 'yes':
-                continue
+                action_str = create_action_string('y', 'n', 'return', STR_QUIT_ACTION)
+                another = input(f'> Do you have another string to encode? {action_str} ').lower().strip()
 
-            terminate = True
-        except Error:
-            if len(unencoded) > 64:
-                unencoded = f'{unencoded[:64]}...'
+                if another in CODES_EXIT:
+                    break
+                elif another in CODES_RETURN:
+                    return_to_main()
+                    break
+                elif another in ['y', 'yes']:
+                    continue
 
-            print(f'{DANGER}Unable to encode string "{unencoded}" to base64 hash!{RESET}')
-            unencoded = str()
-        except UnicodeDecodeError:
-            print(f'{DANGER}Failed to encode hash "{unencoded}" with UTF-8!{RESET}')
-            unencoded = str()
-except KeyboardInterrupt:
-    on_keyboard_interrupt(__file__)
+            except binascii.Error:
+                unencoded = unencoded if len(unencoded) <= 64 else f'{unencoded[:unencoded]}...'
+                print(f'{DANGER}Unable to encode string "{unencoded}" to base64 hash!{RESET}')
+                unencoded = ''
+
+            except UnicodeEncodeError:
+                print(f'{DANGER}Failed to encode hash "{unencoded}" with UTF-8!{RESET}')
+                unencoded = ''
+
+        except KeyboardInterrupt:
+            on_keyboard_interrupt(__file__)
+
+
+if __name__ == '__main__':
+    main()
 
 log_and_exit(__file__)

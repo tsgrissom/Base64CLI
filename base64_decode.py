@@ -1,6 +1,6 @@
-from binascii import Error
-from sys import argv
+import binascii
 
+import argparse
 from pybase64 import b64decode
 from pyperclip import copy
 
@@ -35,66 +35,69 @@ def display_and_copy(output, nocopy):
         print(f'{WARNING}Copied decoded to system clipboard{RESET}')
 
 
-b64 = str()
-decoded = str()
-terminate = False
+def main():
+    arg_help = {
+        'hash': 'The base64 hash to decode',
+        'nocopy': 'Disable copying the decoded hash to the system clipboard'
+    }
 
-if len(argv) > 1:
-    b64 = argv[1]
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--hash', help=arg_help['hash'], metavar='BASE64 HASH', type=str)
+    parser.add_argument('--nocopy', '-nc', action='store_true', default=False, help=arg_help['nocopy'])
+    args = parser.parse_args()
 
-# For graceful exit on KeyboardInterrupt
-try:
-    while not terminate:
-        if b64 == '':
-            b64 = input(f'> Enter your base64 hash ({STR_QUIT_ACTION}): ').strip()
-        else:
-            dprint(f'Decoding hash "{b64}" supplied as command-line argument')
+    b64 = args.hash
+    no_copy = args.nocopy
 
-        if b64.lower() in CODES_EXIT:
-            run_py('main.py')
-            # In this context, an exit code should return to main.py
-            break
-
+    while True:
         try:
-            no_copy = False
+            if b64 is None:
+                user_input = input(f'> Enter your base64 hash ({STR_QUIT_ACTION}): ').strip()
 
-            if b64.endswith(' --nocopy' or b64.endswith(' -nc')):
-                no_copy = True
-                b64 = b64.removesuffix(' --nocopy')
-                b64 = b64.removesuffix(' -nc')
+                if user_input.lower() in CODES_EXIT:
+                    break
+                elif user_input.lower() in CODES_RETURN:
+                    return_to_main(should_newline=False)
+                    break
 
-            decoded = b64decode(b64, validate=True)
-            decoded_str = decoded.decode('utf-8').strip()
+                b64 = user_input
 
-            # Returns bytes, needs to be decoded when displayed
-            display_and_copy(decoded_str, no_copy)
+            try:
+                decoded = b64decode(b64, validate=True)
+                decoded_str = decoded.decode('utf-8').strip()
+                display_and_copy(decoded_str, no_copy)
 
-            action_str = create_action_string('y', 'n', 'return', STR_QUIT_ACTION)
-            another = input(f'> Do you have another hash to decode? {action_str} ')
-            another_compare = another.lower().strip()
+                action_str = create_action_string('y', 'n', 'return', STR_QUIT_ACTION)
+                another = input(f'> Do you have another hash to decode? {action_str} ')
+                another_compare = another.lower().strip()
 
-            if is_base64(another):
-                b64 = another
-                continue
+                if is_base64(another):
+                    b64 = another
+                    continue
 
-            if another_compare in CODES_RETURN:
-                return_to_main()
-                break
-            elif another_compare == 'y' or another_compare == 'yes':
-                continue
+                if another_compare in ['yes', 'y']:
+                    b64 = None
+                    continue
+                if another_compare in CODES_EXIT:
+                    break
+                elif another_compare in CODES_RETURN:
+                    return_to_main(should_newline=False)
+                    break
 
-            terminate = True
-            # User has inputted all hashes they wished to decode for the session
-        except Error:
-            # Truncate length of invalid base64 hash for clean console
-            b64 = b64 if len(b64) <= 64 else f'{b64[:64]}...'
-            print(f'{DANGER}Invalid base64 hash "{b64}"{RESET}')
-            b64 = str()
-            # Program repeats because terminate != False
-        except UnicodeDecodeError:
-            print(f'{DANGER}Failed to decode hash "{b64}" with UTF-8!{RESET}')
-            b64 = str()
-except KeyboardInterrupt:
-    on_keyboard_interrupt(__file__)
+            except binascii.Error:
+                b64 = b64 if len(b64) <= 64 else f'{b64[:64]}...'
+                print(f'{DANGER}Invalid base64 hash "{b64}"{RESET}')
+                b64 = None
+
+            except UnicodeDecodeError:
+                print(f'{DANGER}Failed to decode hash "{b64}" with UTF-8!{RESET}')
+                b64 = None
+
+        except KeyboardInterrupt:
+            on_keyboard_interrupt(__file__)
+
+
+if __name__ == '__main__':
+    main()
 
 log_and_exit(__file__)
