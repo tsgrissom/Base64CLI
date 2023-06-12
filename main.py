@@ -1,8 +1,7 @@
-from subprocess import run
 from sys import argv
 
 from _constants import DANGER, CODES_EXIT, CODES_HELP, STR_QUIT_ACTION, RESET, WARNING
-from _functions import create_action_string, dprint, get_python_cmd, is_base64, log_and_exit, on_keyboard_interrupt, run_py
+from _functions import create_action_string, dprint, is_base64, log_and_exit, on_keyboard_interrupt, run_py
 
 ENCODE_SUBS = ['encode', 'enc', 'e']
 DECODE_SUBS = ['decode', 'dec', 'd']
