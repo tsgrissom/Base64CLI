@@ -8,6 +8,11 @@ from _constants import CODES_EXIT, CODES_RETURN, DANGER, RESET, STR_QUIT_ACTION,
 from _functions import create_action_string, dprint, is_base64, is_debugging, log_and_exit, match_and_get_urls
 from _functions import match_and_replace_urls, on_keyboard_interrupt, return_to_main, run_py, sanitize_output
 
+ARG_HELP = {
+    'hash': 'The base64 hash to decode',
+    'nocopy': 'Disable copying the decoded hash to the system clipboard'
+}
+
 
 # Decoded contents might contain links, if they do they should be colored blue
 def display_and_copy(output, nocopy):
@@ -36,14 +41,9 @@ def display_and_copy(output, nocopy):
 
 
 def main():
-    arg_help = {
-        'hash': 'The base64 hash to decode',
-        'nocopy': 'Disable copying the decoded hash to the system clipboard'
-    }
-
     parser = argparse.ArgumentParser()
-    parser.add_argument('--hash', help=arg_help['hash'], metavar='BASE64 HASH', type=str)
-    parser.add_argument('--nocopy', '-nc', action='store_true', default=False, help=arg_help['nocopy'])
+    parser.add_argument('--hash', help=ARG_HELP['hash'], metavar='BASE64 HASH', type=str)
+    parser.add_argument('--nocopy', '-nc', action='store_true', default=False, help=ARG_HELP['nocopy'])
     args = parser.parse_args()
 
     b64 = args.hash

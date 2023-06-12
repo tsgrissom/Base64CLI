@@ -8,6 +8,11 @@ from _constants import CODES_EXIT, CODES_RETURN, DANGER, RESET, STR_QUIT_ACTION,
 from _functions import create_action_string, dprint, log_and_exit, on_keyboard_interrupt
 from _functions import return_to_main, run_py, sanitize_output
 
+ARG_HELP = {
+    'input': 'The string to encode to base64',
+    'nocopy': 'Disable copying the encoded string to the system clipboard'
+}
+
 
 def display_and_copy(inp, out, nocopy=False):
     """
@@ -30,13 +35,9 @@ def display_and_copy(inp, out, nocopy=False):
 
 
 def main():
-    arg_help = {
-        'input': 'The string to encode to base64',
-        'nocopy': 'Disable copying the encoded string to the system clipboard'
-    }
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input', help=arg_help['input'], metavar='STRING', nargs='?', type=str)
-    parser.add_argument('--nocopy', '-nc', action='store_true', default=False, help=arg_help['nocopy'])
+    parser.add_argument('--input', help=ARG_HELP['input'], metavar='STRING', nargs='?', type=str)
+    parser.add_argument('--nocopy', '-nc', action='store_true', default=False, help=ARG_HELP['nocopy'])
     args = parser.parse_args()
 
     unencoded = args.input

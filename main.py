@@ -52,6 +52,7 @@ def print_help():
 # TODO Tab completion
 # TODO Convert this file to argparse
 # TODO Toggle debugging from within CLI
+# TODO Assess cognitive complexity of each method
 
 should_encode = False
 should_decode = False
