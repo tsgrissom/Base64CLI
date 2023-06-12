@@ -16,7 +16,7 @@ def create_action_string(*actions, colored=True, entry_prefix=f'{ACTION}', delim
                          prefix='(', suffix=')'):
     """
     Constructs a string which represents actions made available to the user.
-    :param   actions:
+    :param   actions: A list of strings which will be interspersed into the generated action string.
     :param   colored: Whether to add color to the formatting of the generated string.
     :param   entry_prefix: What should be prepended to each action entry in the string. Default is a color prefix.
     :param   delimiter: What should delimit each action entry in the string. Default is an uncolored forward slash.
