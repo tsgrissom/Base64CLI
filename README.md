@@ -7,6 +7,7 @@ Sample scripts are included in the /batch/ folder for examples on how to access 
 ### Requirements
 
 The following packages are required and can be installed via the pip command below:
+* [argparse](https://pypi.org/project/argparse/)
 * [colorama](https://pypi.org/project/colorama/)
 * [pybase64](https://pypi.org/project/pybase64/)
 * [pyperclip](https://pypi.org/project/pyperclip/)
