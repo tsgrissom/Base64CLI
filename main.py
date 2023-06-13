@@ -48,11 +48,14 @@ def print_help():
 
 # TODO Toggle debugging from within CLI
 # TODO Assess cognitive complexity of each method
+# TODO Add pip install support
+# TODO Support --input flag from this file
 # https://towardsdatascience.com/a-simple-guide-to-command-line-arguments-with-argparse-6824c30ab1c3
 
 parser = argparse.ArgumentParser(description='Base64CLI')
-parser.add_argument('--encode', '--enc', '-e', action='store_true', help='Encode input to base64 hash')
-parser.add_argument('--decode', '--dec', '-d', action='store_true', help='Decode base64 hash to string')
+group = parser.add_mutually_exclusive_group()
+group.add_argument('--encode', '--enc', '-e', action='store_true', help='Encode input to base64 hash')
+group.add_argument('--decode', '--dec', '-d', action='store_true', help='Decode base64 hash to string')
 args = parser.parse_args()
 
 should_encode = args.encode
