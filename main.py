@@ -1,13 +1,10 @@
-from sys import argv
+import argparse
 
 from _constants import DANGER, CODES_EXIT, CODES_HELP, STR_QUIT_ACTION, RESET, WARNING
 from _functions import create_action_string, dprint, is_base64, log_and_exit, on_keyboard_interrupt, run_py
 
 ENCODE_SUBS = ['encode', 'enc', 'e']
 DECODE_SUBS = ['decode', 'dec', 'd']
-
-ENCODE_FLAGS = ['--encode', '-e']
-DECODE_FLAGS = ['--decode', '-d']
 
 PY_FILES = {
     'encode': 'base64_encode.py',
@@ -49,61 +46,66 @@ def print_help():
         print(line)
 
 
-# TODO Tab completion
-# TODO Convert this file to argparse
 # TODO Toggle debugging from within CLI
 # TODO Assess cognitive complexity of each method
+# https://towardsdatascience.com/a-simple-guide-to-command-line-arguments-with-argparse-6824c30ab1c3
 
-should_encode = False
-should_decode = False
+parser = argparse.ArgumentParser(description='Base64CLI')
+parser.add_argument('--encode', '--enc', '-e', action='store_true', help='Encode input to base64 hash')
+parser.add_argument('--decode', '--dec', '-d', action='store_true', help='Decode base64 hash to string')
+args = parser.parse_args()
 
-if len(argv) > 1:
-    for a in argv:
-        if a.lower() in ENCODE_FLAGS: should_encode = True
-        elif a.lower() in DECODE_FLAGS: should_decode = True
-
+should_encode = args.encode
+should_decode = args.decode
 terminate = False
+
+if should_encode:
+    run_py(PY_FILES['encode'])
+    terminate = True
+elif should_decode:
+    run_py(PY_FILES['decode'])
+    terminate = True
 
 try:
     while not terminate:
         prompt = f'[Base64CLI] Do you need to encode or decode for base64? {create_action_string("enc", "dec")} '
         # Somewhat confusing varname, this is just the user input for the main python process. It could be an action,
         #  an exit code, a help code, or otherwise it is either an encoded or a string to be encoded.
-        input_method = input(prompt)
-        input_compare = input_method.lower().strip()
+        user_input = input(prompt).strip()
         # Preserve the capital letters of the user input
 
-        if input_compare in CODES_EXIT:
+        if user_input.lower() in CODES_EXIT:
             terminate = True
             log_and_exit(__file__)
             break
-        elif input_compare in CODES_HELP:
+        elif user_input.lower() in CODES_HELP:
             print_help()
-        elif should_encode or input_compare in ENCODE_SUBS:
+        elif user_input.lower() in ENCODE_SUBS:
             terminate = True
             run_py(PY_FILES['encode'])
             break
-        elif should_decode or input_compare in DECODE_SUBS:
+        elif user_input.lower() in DECODE_SUBS:
             terminate = True
             run_py(PY_FILES['decode'])
             break
         else:
-            if is_base64(input_method):
-                dprint('Automatically detected a base64 hash as input, asking user...')
+            if not is_base64(user_input):
+                run_py(PY_FILES['encode'], '--input', user_input)
 
-                action_str = create_action_string('y', 'n')
-                input_truncated = input_method if len(input_compare) <= 24 else f'{input_method[:24]}...'
-                prompt = f'Found potential base64 hash "{input_truncated}", would you like to decode it? {action_str}'
-                proceed = input(f'> {prompt} ')
+            dprint('Automatically detected a base64 hash as input, asking user...')
 
-                if proceed.lower().strip() in ['y', 'yes', 'proceed', 'continue']:
-                    dprint('User approved decoding of auto-detected hash, passing on...')
-                    run_py(PY_FILES['decode'], '--hash', input_method)
-                else:
-                    dprint('User aborted decoding of auto-detected hash, continuing...')
-                    continue
+            action_str = create_action_string('y', 'n')
+            input_truncated = user_input if len(user_input.lower()) <= 24 else f'{user_input[:24]}...'
+            prompt = f'Found potential base64 hash "{input_truncated}", would you like to decode it? {action_str}'
+            proceed = input(f'> {prompt} ')
+
+            if proceed.lower().strip() in ['y', 'yes', 'proceed', 'continue']:
+                dprint('User approved decoding of auto-detected hash, passing on...')
+                run_py(PY_FILES['decode'], '--hash', user_input)
             else:
-                run_py(PY_FILES['encode'], '--input', input_method)
+                dprint('User aborted decoding of auto-detected hash, continuing...')
+                continue
+
             break
 except KeyboardInterrupt:
     on_keyboard_interrupt(__file__)
