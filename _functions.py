@@ -5,10 +5,7 @@ from re import Pattern
 from subprocess import run
 
 import base64
-
-import dotenv
 from dotenv import load_dotenv
-from dotenv import set_key
 
 from _constants import ACTION, LINK, RESET, WARNING
 

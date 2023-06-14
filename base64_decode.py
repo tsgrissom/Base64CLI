@@ -1,12 +1,12 @@
+import argparse
 import binascii
 
-import argparse
 from pybase64 import b64decode
 from pyperclip import copy
 
 from _constants import CODES_EXIT, CODES_RETURN, DANGER, RESET, STR_QUIT_ACTION, SUCCESS, WARNING
 from _functions import create_action_string, dprint, is_base64, is_debugging, log_and_exit, match_and_get_urls
-from _functions import match_and_replace_urls, on_keyboard_interrupt, return_to_main, run_py, sanitize_output
+from _functions import match_and_replace_urls, on_keyboard_interrupt, return_to_main, sanitize_output
 
 ARG_HELP = {
     'hash': 'base64 hash to decode',
