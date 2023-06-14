@@ -1,11 +1,14 @@
 import binascii
-from os import path, getenv
+import os
 import re
 from re import Pattern
 from subprocess import run
 
 import base64
+
+import dotenv
 from dotenv import load_dotenv
+from dotenv import set_key
 
 from _constants import ACTION, LINK, RESET, WARNING
 
@@ -14,7 +17,7 @@ load_dotenv()
 
 def beautify_filename(filename: str) -> str:
     # Ex: base64_encode.py -> Base64 Encode
-    beautiful = path.basename(filename).replace('.py', '')
+    beautiful = os.path.basename(filename).replace('.py', '')
     split = beautiful.split('_')
     beautiful = ''
     for s in split:
@@ -142,7 +145,7 @@ def is_debugging():
     Checks if debugging is active in the environment. Specifically checks if Debug==True in the environment (Def: .env)
     :return: Whether debugging is active in the environment.
     """
-    return bool(str.lower(getenv('DEBUG', 'False')))
+    return bool(str.lower(os.getenv('DEBUG', 'False')))
 
 
 def is_base64(string):
@@ -182,7 +185,7 @@ def get_python_cmd():
       Set within the .env file under key "PYTHON_CMD" (see .env.example)
     :return: The results of getenv('PYTHON_CMD'), deferring to default "python" if variable is unavailable.
     """
-    return getenv('PYTHON_CMD', 'python')
+    return os.getenv('PYTHON_CMD', 'python')
 
 
 def log_and_exit(filename, exitcode=0, should_beautify=True, thankful=True, color_prefix=f'{WARNING}'):
@@ -289,7 +292,7 @@ def run_py(pyfile, *append):
     if not pyfile.endswith('.py'):
         pyfile += '.py'
 
-    py_command = getenv('PYTHON_CMD', 'python')
+    py_command = os.getenv('PYTHON_CMD', 'python')
     run_contents = [py_command, pyfile]
 
     if append is not None:
