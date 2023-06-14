@@ -10,20 +10,21 @@ PY_FILES = {
     'encode': 'base64_encode.py',
     'decode': 'base64_decode.py'
 }
-
+1
 STR_COLORED_RETURN = f'{WARNING}\u2937{RESET}'
 STR_HELP = [
+    'decode: Base64 hash \u2794 Unencoded string',
+    f'{STR_COLORED_RETURN} Aliases: dec, d',
+    f'{STR_COLORED_RETURN} Flags:',
+    '   --hash: The hash to decode into a string',
+    '   --nocopy or -nc: Prevents copying of decoded string',
     f'{WARNING}Base64CLI Help{RESET}',
     'encode: Unencoded string \u2794 Base64 hash',
     f'{STR_COLORED_RETURN} Aliases: enc, e',
     f'{STR_COLORED_RETURN} Flags:',
     '   --input: The string to encode into a base64 hash',
     '   --nocopy or -nc: Prevents copying of resulting hash',
-    'decode: Base64 hash \u2794 Unencoded string',
-    f'{STR_COLORED_RETURN} Aliases: dec, d',
-    f'{STR_COLORED_RETURN} Flags:',
-    '   --hash: The hash to decode into a string',
-    '   --nocopy or -nc: Prevents copying of decoded string'
+    'help: Show this help message'
 ]
 
 

@@ -42,7 +42,7 @@ def display_and_copy(output, nocopy):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--hash', help=ARG_HELP['hash'], metavar='BASE64 HASH', type=str)
+    parser.add_argument('--hash', '--input', '-i', help=ARG_HELP['hash'], metavar='BASE64 HASH', type=str)
     parser.add_argument('--nocopy', '-nc', action='store_true', default=False, help=ARG_HELP['nocopy'])
     args = parser.parse_args()
 

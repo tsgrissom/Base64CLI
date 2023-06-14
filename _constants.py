@@ -3,7 +3,7 @@ from colorama import Fore, Style
 ACTION = Fore.CYAN
 ADVISE = Fore.LIGHTRED_EX
 CODES_EXIT = ['q', 'quit', 'exit', 'end']
-CODES_HELP = ['help', 'h', '/?', '?']
+CODES_HELP = ['--help', '-h', 'help', 'h', '/?', '?']
 CODES_RETURN = ['return', 'back', 'menu', 'main']
 DANGER = Fore.RED
 LINK = Fore.BLUE

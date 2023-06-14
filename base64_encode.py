@@ -36,11 +36,11 @@ def display_and_copy(inp, out, nocopy=False):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input', help=ARG_HELP['input'], metavar='STRING', nargs='?', type=str)
+    parser.add_argument('--hash', '--input', '-i', help=ARG_HELP['input'], metavar='STRING', nargs='?', type=str)
     parser.add_argument('--nocopy', '-nc', action='store_true', default=False, help=ARG_HELP['nocopy'])
     args = parser.parse_args()
 
-    unencoded = args.input
+    unencoded = args.hash
     no_copy = args.nocopy
 
     while True:
