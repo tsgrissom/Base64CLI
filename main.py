@@ -1,8 +1,7 @@
 import argparse
 
 from _constants import DANGER, CODES_EXIT, CODES_HELP, STR_QUIT_ACTION, RESET, WARNING
-from _functions import create_action_string, dprint, is_base64, log_and_exit, on_keyboard_interrupt
-from _functions import run_py, toggle_debug
+from _functions import create_action_string, dprint, is_base64, log_and_exit, on_keyboard_interrupt, run_py
 
 ENCODE_SUBS = ['encode', 'enc', 'e']
 DECODE_SUBS = ['decode', 'dec', 'd']
@@ -49,7 +48,6 @@ def print_help():
 
 
 # TODO Toggle debugging from within CLI
-# TODO Assess cognitive complexity of each method
 # TODO Add pip install support
 # https://towardsdatascience.com/a-simple-guide-to-command-line-arguments-with-argparse-6824c30ab1c3
 
@@ -119,5 +117,6 @@ try:
             else:
                 dprint('User aborted decoding of auto-detected hash, continuing...')
                 continue
+
 except KeyboardInterrupt:
     on_keyboard_interrupt(__file__)
