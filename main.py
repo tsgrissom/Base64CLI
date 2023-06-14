@@ -54,8 +54,8 @@ def print_help():
 
 parser = argparse.ArgumentParser(description='Base64CLI')
 group = parser.add_mutually_exclusive_group()
-group.add_argument('--encode', '--enc', '-e', action='store_true', help='Encode input to base64 hash')
-group.add_argument('--decode', '--dec', '-d', action='store_true', help='Decode base64 hash to string')
+group.add_argument('--encode', '--enc', '-e', action='store_true', help='encode input to base64 hash')
+group.add_argument('--decode', '--dec', '-d', action='store_true', help='decode base64 hash to string')
 args = parser.parse_args()
 
 should_encode = args.encode

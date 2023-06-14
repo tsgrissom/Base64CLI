@@ -9,8 +9,8 @@ from _functions import create_action_string, dprint, log_and_exit, on_keyboard_i
 from _functions import return_to_main, run_py, sanitize_output
 
 ARG_HELP = {
-    'input': 'The string to encode to base64',
-    'nocopy': 'Disable copying the encoded string to the system clipboard'
+    'input': 'string to encode to base64',
+    'nocopy': 'disable copying the encoded string to the system clipboard'
 }
 
 

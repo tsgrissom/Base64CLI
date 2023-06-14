@@ -9,8 +9,8 @@ from _functions import create_action_string, dprint, is_base64, is_debugging, lo
 from _functions import match_and_replace_urls, on_keyboard_interrupt, return_to_main, run_py, sanitize_output
 
 ARG_HELP = {
-    'hash': 'The base64 hash to decode',
-    'nocopy': 'Disable copying the decoded hash to the system clipboard'
+    'hash': 'base64 hash to decode',
+    'nocopy': 'disable copying the decoded hash to the system clipboard'
 }
 
 
