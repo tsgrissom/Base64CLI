@@ -108,35 +108,6 @@ def dprint(string, prefix=f'[{WARNING}Debug{RESET}] ', should_prefix=True):
     print(string)
 
 
-# TODO Use this
-def equals_any(compare, *to, ignore_case=True):
-    """
-    Returns True if the `compare` value is equal to any of the `to` values, False otherwise.
-    :param compare: The value to compare.
-    :param to: A list of values to compare against.
-    :param ignore_case: Whether to ignore case when comparing values.
-    :return: Whether `compare` equals any of the `to` values, False otherwise.
-    """
-    if not isinstance(compare, str):
-        raise TypeError('compare must be a string.')
-    if not isinstance(ignore_case, bool):
-        raise TypeError('ignore_case must be a boolean value.')
-
-    if len(to) == 0:
-        if len(compare) == 0:
-            return True
-        else:
-            return False
-
-    for t in to:
-        if ignore_case:
-            compare = str(compare).lower()
-            t = t.lower()
-        if compare == t:
-            return True
-    return False
-
-
 def is_debugging():
     """
     Checks if debugging is active in the environment. Specifically checks if Debug==True in the environment (Def: .env)
@@ -198,7 +169,7 @@ def log_and_exit(filename, exitcode=0, should_beautify=True, thankful=True, colo
     if not isinstance(filename, str):
         raise TypeError('filename must be a string')
 
-    filename = beautify_filename(filename) if should_beautify else path.basename(filename)
+    filename = beautify_filename(filename) if should_beautify else os.path.basename(filename)
     if filename == 'Main':
         filename = 'Base64CLI'
         thankful = False
