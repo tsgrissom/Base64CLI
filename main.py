@@ -82,18 +82,19 @@ try:
     while not terminate:
         prompt = f'[Base64CLI] Do you need to encode or decode for base64? {create_action_string("enc", "dec")} '
         user_input = input(prompt).strip()
+        input_lower = user_input.lower()
 
-        if user_input.lower() in CODES_EXIT:
+        if input_lower in CODES_EXIT:
             terminate = True
             log_and_exit(__file__)
-        elif user_input.lower() in CODES_HELP:
+        elif input_lower in CODES_HELP:
             print_help()
             continue
-        elif user_input.lower() in ENCODE_SUBS:
+        elif input_lower in ENCODE_SUBS:
             terminate = True
             run_py(PY_FILES['encode'])
             break
-        elif user_input.lower() in DECODE_SUBS:
+        elif input_lower in DECODE_SUBS:
             terminate = True
             run_py(PY_FILES['decode'])
             break
@@ -106,7 +107,7 @@ try:
             dprint('Automatically detected a base64 hash as input, asking user...')
 
             action_str = create_action_string('y', 'n')
-            input_truncated = user_input if len(user_input.lower()) <= 24 else f'{user_input[:24]}...'
+            input_truncated = user_input if len(user_input) <= 24 else f'{user_input[:24]}...'
             prompt = f'Found potential base64 hash "{input_truncated}", would you like to decode it? {action_str}'
             proceed = input(f'> {prompt} ')
 
