@@ -77,10 +77,10 @@ def sanitize_output(output, prefix='- ', replace_newlines_with_prefix=True):
     display = output
 
     # Replace double linebreaks with single linebreaks
-    if "\n\n" in display:
+    if '\n\n' in display:
         output = output.replace('\n\n', '\n')
 
-    if "\n" in display:
+    if '\n' in display:
         if replace_newlines_with_prefix:
             output = f'{prefix}{output}'
             output = output.replace('\n', f'\n{prefix}')
