@@ -49,6 +49,7 @@ def print_help():
 
 # TODO Toggle debugging from within CLI
 # TODO Add pip install support
+# TODO Make --help less verbose
 # https://towardsdatascience.com/a-simple-guide-to-command-line-arguments-with-argparse-6824c30ab1c3
 
 parser = argparse.ArgumentParser(description='Base64CLI')
@@ -58,21 +59,21 @@ group.add_argument('--encode', '--enc', '-e', action='store_true', help='encode 
 parser.add_argument('--hash', '--input', '-i', help='input string to encode/decode', nargs='+')
 args = parser.parse_args()
 
-cli_input = None if args.hash is None else ' '.join(args.hash)
+direct_input = None if args.hash is None else ' '.join(args.hash)
 should_encode = args.encode
 should_decode = args.decode
 
 terminate = False
 
 if should_encode:
-    if cli_input is not None:
-        run_py(PY_FILES['encode'], '-i', cli_input)
+    if direct_input is not None:
+        run_py(PY_FILES['encode'], '-i', direct_input)
     else:
         run_py(PY_FILES['encode'])
     terminate = True
 elif should_decode:
-    if cli_input is not None:
-        run_py(PY_FILES['decode'], '-i', cli_input)
+    if direct_input is not None:
+        run_py(PY_FILES['decode'], '-i', direct_input)
     else:
         run_py(PY_FILES['decode'])
     terminate = True
