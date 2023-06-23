@@ -65,6 +65,10 @@ should_decode = args.decode
 
 terminate = False
 
+if should_encode and should_decode:
+    dprint('Unable to encode and decode at the same time, defaulting to encoding for this session')
+    should_decode = False
+
 if should_encode:
     if direct_input is not None:
         run_py(PY_FILES['encode'], '-i', direct_input)
