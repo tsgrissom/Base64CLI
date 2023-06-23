@@ -42,11 +42,6 @@ def ask_method(inp):
         print(f'{DANGER}Unknown base64 method "{inp}"{RESET}')
 
 
-def print_help():
-    for line in STR_HELP:
-        print(line)
-
-
 # TODO Toggle debugging from within CLI
 # TODO Add pip install support
 # TODO Make --help less verbose
@@ -70,16 +65,16 @@ if should_encode and should_decode:
     should_decode = False
 
 if should_encode:
-    if direct_input is not None:
-        run_py(PY_FILES['encode'], '-i', direct_input)
-    else:
+    if direct_input is None:
         run_py(PY_FILES['encode'])
+    else:
+        run_py(PY_FILES['encode'], '-i', direct_input)
     terminate = True
 elif should_decode:
-    if direct_input is not None:
-        run_py(PY_FILES['decode'], '-i', direct_input)
-    else:
+    if direct_input is None:
         run_py(PY_FILES['decode'])
+    else:
+        run_py(PY_FILES['decode'], '-i', direct_input)
     terminate = True
 
 try:
@@ -92,7 +87,8 @@ try:
             terminate = True
             log_and_exit(__file__)
         elif input_lower in CODES_HELP:
-            print_help()
+            for line in STR_HELP:
+                print(line)
             continue
         elif input_lower in ENCODE_SUBS:
             terminate = True
