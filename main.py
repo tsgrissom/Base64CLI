@@ -9,7 +9,7 @@ DECODE_SUBS = ['decode', 'dec', 'd']
 
 PY_FILES = {
     'encode': 'base64_encode.py',
-    'decode': 'base64_decode.py'
+    'decode': 'decode.py'
 }
 
 STR_COLORED_RETURN = f'{WARNING}\u2937{RESET}'
