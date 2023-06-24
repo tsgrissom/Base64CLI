@@ -17,8 +17,10 @@ ARG_HELP = {
 
 class DecodeProcess:
 
+    args = None
     hash = None
     no_copy = False
+
     terminate = False
 
     def parse_args(self) -> Namespace:
@@ -27,13 +29,21 @@ class DecodeProcess:
         parser.add_argument('--nocopy', '-nc', action='store_true', default=False, help=ARG_HELP['nocopy'])
         return parser.parse_args()
 
+    def __init__(self):
+        self.args = self.parse_args()
+
+        if self.args.hash is not None:
+            self.hash = self.args.hash
+
+        self.no_copy = self.args.nocopy
+
     def request_hash(self):
         inp = input(f'> Enter your base64 hash ({STR_QUIT_ACTION}): ').strip()
 
         if inp.lower() in CODES_EXIT:
             self.terminate = True
             return
-        elif inp.lower() in CODES_EXIT:
+        elif inp.lower() in CODES_RETURN:
             self.terminate = True
             return_to_main(should_newline=False)
             return
@@ -102,9 +112,6 @@ class DecodeProcess:
             self.terminate = True
 
     def main(self):
-        args = self.parse_args()
-        self.no_copy = args.nocopy
-
         while not self.terminate:
             try:
                 if self.hash is None:

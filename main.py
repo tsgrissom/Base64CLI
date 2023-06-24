@@ -7,11 +7,6 @@ from _functions import create_action_string, dprint, is_base64, log_and_exit, on
 ENCODE_SUBS = ['encode', 'enc', 'e']
 DECODE_SUBS = ['decode', 'dec', 'd']
 
-PY_FILES = {
-    'encode': 'base64_encode.py',
-    'decode': 'decode.py'
-}
-
 STR_COLORED_RETURN = f'{WARNING}\u2937{RESET}'
 STR_HELP = [
     'decode: Base64 hash \u2794 Unencoded string',
@@ -34,6 +29,7 @@ STR_HELP = [
 # TODO Make --help less verbose
 class MainProcess:
 
+    args = None
     terminate = False
 
     # https://towardsdatascience.com/a-simple-guide-to-command-line-arguments-with-argparse-6824c30ab1c3
@@ -45,6 +41,9 @@ class MainProcess:
         parser.add_argument('--hash', '--input', '-i', help='input string to encode/decode', nargs='+')
         return parser.parse_args()
 
+    def __init__(self):
+        self.args = self.parse_args()
+
     def ask_method(self, inp):
         method_action_str = create_action_string('enc', 'dec', STR_QUIT_ACTION)
         resp = input(f'> Do you want to encode or decode your input "{inp}"? {method_action_str} ').lower().strip()
@@ -52,13 +51,13 @@ class MainProcess:
         if resp in CODES_EXIT:
             log_and_exit(__file__)
         elif resp in ENCODE_SUBS:
-            run_py(PY_FILES['encode'], inp)
+            run_py('encode.py', inp)
         elif resp in DECODE_SUBS:
-            run_py(PY_FILES['decode'], inp)
+            run_py('decode.py', inp)
         else:
             print(f'{DANGER}Unknown base64 method "{inp}"{RESET}')
 
-    def handle_method_from_arg(self, args):
+    def handle_method_from_args(self, args):
         should_encode = args.encode
         should_decode = args.decode
         direct_input = None if args.hash is None else ' '.join(args.hash)
@@ -69,40 +68,40 @@ class MainProcess:
 
         if should_encode:
             if direct_input is None:
-                run_py(PY_FILES['encode'])
+                run_py('encode.py')
             else:
-                run_py(PY_FILES['encode'], '-i', direct_input)
+                run_py('encode.py', '-i', direct_input)
             self.terminate = True
         elif should_decode:
             if direct_input is None:
-                run_py(PY_FILES['decode'])
+                run_py('decode.py')
             else:
-                run_py(PY_FILES['decode'], '-i', direct_input)
+                run_py('decode.py', '-i', direct_input)
             self.terminate = True
 
     def handle_alternative_input(self, inp):
         if not is_base64(inp):
             self.terminate = True
-            run_py(PY_FILES['encode'], '-i', inp)
+            run_py('encode.py', '-i', inp)
             return True
 
         dprint('Automatically detected a base64 hash as input, asking user...')
 
         action_str = create_action_string('y', 'n')
+        # TODO Replace with truncate method
         input_truncated = inp if len(inp) <= 24 else f'{inp[:24]}...'
         prompt = f'Found potential base64 hash "{input_truncated}", would you like to decode it? {action_str}'
         proceed = input(f'> {prompt} ')
 
         if proceed.lower().strip() in ['y', 'yes', 'proceed', 'continue']:
             dprint('User approved decoding of auto-detected hash, passing on...')
-            run_py(PY_FILES['decode'], '-i', inp)
+            run_py('decode.py', '-i', inp)
             self.terminate = True
         else:
             dprint('User aborted decoding of auto-detected hash, continuing...')
 
     def main(self):
-        args = self.parse_args()
-        self.handle_method_from_arg(args)
+        self.handle_method_from_args(self.args)
 
         try:
             while not self.terminate:
@@ -120,11 +119,11 @@ class MainProcess:
                     continue
                 elif input_lower in ENCODE_SUBS:
                     self.terminate = True
-                    run_py(PY_FILES['encode'])
+                    run_py('encode.py')
                     break
                 elif input_lower in DECODE_SUBS:
                     self.terminate = True
-                    run_py(PY_FILES['decode'])
+                    run_py('decode.py')
                     break
                 else:
                     self.handle_alternative_input(user_input)
