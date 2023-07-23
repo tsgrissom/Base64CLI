@@ -1,4 +1,4 @@
 REM Allows you to call 'b64d <hash>' from console
-cd C:
-cd PycharmProjects\Base64CLI
+REM Modify to suit your directory set up
+cd /d "D:\Projects\Pycharm\Base64CLI"
 python decode.py %1
